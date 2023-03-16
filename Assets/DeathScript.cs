@@ -13,12 +13,18 @@ public class DeathScript : MonoBehaviour
 {
     public GameObject LeftHand;
     public GameObject RightHand;
+
+    public GameObject GhostHandLeft;
+    public GameObject GhostHandRight;
     private ActionBasedContinuousMoveProvider aBCP; 
     private bool Dead = false;
     private ScriptableObject flyingScript;
     void Start()
     {
         aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
+        StartCoroutine(Dying());
+        GhostHandLeft.SetActive(false);
+        GhostHandRight.SetActive(false);
     }
 
 
@@ -29,6 +35,8 @@ public class DeathScript : MonoBehaviour
         {
             LeftHand.SetActive(false);
             RightHand.SetActive(false);
+            GhostHandLeft.SetActive(true);
+            GhostHandRight.SetActive(true);
             aBCP.enableFly = true;
         }
     }
