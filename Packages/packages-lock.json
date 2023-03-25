@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.soupday.cc3_unity_tools": {
-      "version": "file:D:/Packages/cc_unity_tools_URP-main/cc_unity_tools_URP-main",
+      "version": "file:C:/Users/denis/Desktop/cc_unity_tools_URP-main",
       "depth": 0,
       "source": "local",
       "dependencies": {
