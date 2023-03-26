@@ -11,16 +11,20 @@ public class HoverScript : MonoBehaviour
  
     public float ampDep;
     public float freqDep;
+
     Vector3 initPos;
+
+    private CharacterController controller;
+
     private void Start()
     {
         initPos = transform.position;
-
+        controller = gameObject.AddComponent<CharacterController>();
     }
 
     void Update()
     {
-        transform.position = new Vector3(Mathf.Sin(Time.time * freqHor) * ampHor + initPos.x, Mathf.Sin(Time.time * freq) * amp + initPos.y, Mathf.Sin(Time.time * freqDep) * ampDep + initPos.z);
+        controller.Move(new Vector3(Mathf.Sin(Time.time * freqHor) * ampHor + initPos.x, Mathf.Sin(Time.time * freq) * amp + initPos.y, Mathf.Sin(Time.time * freqDep) * ampDep + initPos.z));
 
     }
    
