@@ -16,8 +16,12 @@ public class DeathScript : MonoBehaviour
 
     public GameObject GhostHandLeft;
     public GameObject GhostHandRight;
+
+
+    public GameObject Corpse;
+
     private ActionBasedContinuousMoveProvider aBCP; 
-    private bool Dead = false;
+    public bool Dead = false;
     private ScriptableObject flyingScript;
     void Start()
     {
@@ -38,6 +42,7 @@ public class DeathScript : MonoBehaviour
             GhostHandLeft.SetActive(true);
             GhostHandRight.SetActive(true);
             aBCP.enableFly = true;
+            Corpse.SetActive(true);
         }
     }
 
