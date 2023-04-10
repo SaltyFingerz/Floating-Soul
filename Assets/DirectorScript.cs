@@ -17,7 +17,7 @@ public class DirectorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(deathScript.Dead)
+        if(DeathScript.Dead)
         {
             StartCoroutine(waitToWalk());
         }
@@ -25,7 +25,7 @@ public class DirectorScript : MonoBehaviour
 
     IEnumerator waitToWalk()
     {
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(2);
         animDoor.SetTrigger("Open");
         yield return new WaitForSeconds(1);
         animBoletus.SetTrigger("Walk");

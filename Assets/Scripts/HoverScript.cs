@@ -20,7 +20,7 @@ public class HoverScript : MonoBehaviour
 
     void Update()
     {
-        transform.position = new Vector3(Mathf.Sin(Time.time * freqHor) * ampHor + initPos.x, Mathf.Sin(Time.time * freq) * amp + initPos.y, Mathf.Sin(Time.time * freqDep) * ampDep + initPos.z);
+        transform.position = new Vector3(transform.position.x, Mathf.Sin(Time.time * freq) * amp + transform.position.y, transform.position.z);
 
     }
    

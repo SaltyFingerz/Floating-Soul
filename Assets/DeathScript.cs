@@ -21,12 +21,12 @@ public class DeathScript : MonoBehaviour
     public GameObject Corpse;
 
     private ActionBasedContinuousMoveProvider aBCP; 
-    public bool Dead = false;
+    public static bool Dead = false;
     private ScriptableObject flyingScript;
     void Start()
     {
         aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
-        StartCoroutine(Dying());
+       // StartCoroutine(Dying());
         GhostHandLeft.SetActive(false);
         GhostHandRight.SetActive(false);
     }
@@ -47,10 +47,11 @@ public class DeathScript : MonoBehaviour
     }
 
 
-    IEnumerator Dying()
+ /*   IEnumerator Dying()
     {
         yield return new WaitForSeconds(10f);
         Dead = true;
     }
+ */
 
 }
