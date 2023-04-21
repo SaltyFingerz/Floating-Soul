@@ -21,14 +21,35 @@ public class DeathScript : MonoBehaviour
     //public GameObject LivingAmbience;
     public GameObject Corpse;
     public Image Blind;
+    public Image Light;
     private ActionBasedContinuousMoveProvider aBCP; 
     public static bool Dead = false;
     private ScriptableObject flyingScript;
     public AudioSource BirdsAudio;
     public AudioSource MachineAudio;
     public Animator EyeLidAnim;
-    public float fadeInTime = 10f; // Time in seconds for the fade-in effect
+    public Animator CamAnim;
+    public float fadeInTime = 20f; // Time in seconds for the fade-in effect
     private float alpha;
+    
+
+    public float fadeDuration = 10f; // duration of the fade in seconds
+  
+    private float initialVolume;
+
+    bool Died = false;
+        
+   
+
+
+
+    public void StartFadeOut()
+    {
+        BirdsAudio.volume = initialVolume;
+        BirdsAudio.Play();
+    }
+
+
     void Start()
     {
         aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
@@ -36,12 +57,15 @@ public class DeathScript : MonoBehaviour
         GhostHandLeft.SetActive(false);
         GhostHandRight.SetActive(false);
         Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 0f); // Set the alpha value of the Image color to 0
+
+        initialVolume = BirdsAudio.volume;
+
     }
 
 
     void Update()
     {
-
+        print(BirdsAudio.volume);
         if (Dead)
         {
             LeftHand.SetActive(false);
@@ -50,9 +74,11 @@ public class DeathScript : MonoBehaviour
             GhostHandRight.SetActive(true);
             aBCP.enableFly = true;
             Corpse.SetActive(true);
-            
-            StartCoroutine(LosingSenses());
 
+           // if (!Died)
+         //   {
+                StartCoroutine(LosingSenses());
+          //  }
 
         }
 
@@ -62,13 +88,30 @@ public class DeathScript : MonoBehaviour
 
  IEnumerator LosingSenses()
     {
+       
         EyeLidAnim.SetTrigger("Dead");
         yield return new WaitForSeconds(2f);
         //  StartCoroutine(AudioFadeOut.FadeOut(BirdsAudio, 20f));
         //  StartCoroutine(AudioFadeOut.FadeOut(MachineAudio, 20f));
         //  yield return new WaitForSeconds(2f);
+
+        if (BirdsAudio.volume > 0f)
+        {
+            BirdsAudio.volume -= Time.deltaTime / (fadeDuration*100);
+        }
+        else
+        {
+            BirdsAudio.volume = 0f;
+            BirdsAudio.Stop();
+            if (!Died)
+            {
+                StartCoroutine(FadeIn());
+            }
+        }
+
         // Start the coroutine to fade in the Image over time
-        StartCoroutine(FadeIn());
+        StopCoroutine(LosingSenses());
+       
         yield return new WaitForSeconds(2);
        // EyeLids.SetActive(false);
     }
@@ -83,9 +126,29 @@ public class DeathScript : MonoBehaviour
 
         }
         Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 1f);
+        Died = true;
+        EyeLids.SetActive(false);
+        yield return new WaitForSeconds(3);
+        StartCoroutine (FadeOut());
        
+        StopCoroutine(FadeIn());
+     
         
     }
+
+    private IEnumerator FadeOut()
+    {
+        while (alpha > 0)
+        {
+            Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, alpha);
+            alpha -= 0.5f * Time.deltaTime;
+            yield return null;
+
+        }
+        Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 0f);
+        yield return new WaitForSeconds (3);
+        CamAnim.SetTrigger("rise");
+    }    
 
    /* public IEnumerator FadeIn(Image a_image)
         {
