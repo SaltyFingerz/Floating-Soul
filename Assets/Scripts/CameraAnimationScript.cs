@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraAnimationScript : MonoBehaviour
 {
     private Animator anim;
-
+    public Animator EyeLidAnim;
     [SerializeField] private AudioSource heartAttack;
 
     [SerializeField] private AudioSource normalHeartbeat;
@@ -40,6 +40,7 @@ public class CameraAnimationScript : MonoBehaviour
     IEnumerator DyingRoutine5678()
     {
         anim.SetTrigger("pain");
+        EyeLidAnim.SetTrigger("Pain");
         heartAttack.Play();
         normalHeartbeat.Stop();
         faster1Heartbeat.Play();
@@ -55,11 +56,16 @@ public class CameraAnimationScript : MonoBehaviour
         fastestHeartAttack.Play();
         yield return new WaitForSeconds(5f);
         anim.SetTrigger("dead");
-        yield return new WaitForSeconds(2f);
-        fastestHeartAttack.Stop();
-        yield return new WaitForSeconds(5f);
-        DeathScript.Dead = true;
+        
+       
         
 
+    }
+
+    IEnumerator MomentOfDeath()
+    {
+        fastestHeartAttack.Stop();
+        DeathScript.Dead = true;
+        yield return null;
     }
 }

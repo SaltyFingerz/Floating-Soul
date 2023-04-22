@@ -21,14 +21,14 @@ public class GhostHandControlsScript : MonoBehaviour
         {
             float triggerValue = floatAmount.action.ReadValue<float>();
             TheBody.transform.position += new Vector3(0, triggerValue * movementSpeed * Time.deltaTime, 0);
-            print("triggerValue " + triggerValue);
+           
         }
 
         else
         {
             float triggerValue = floatAmount.action.ReadValue<float>();
             TheBody.transform.position -= new Vector3(0, triggerValue * movementSpeed * Time.deltaTime, 0);
-            print("triggerValue " + triggerValue);
+            
         }
     }
 }

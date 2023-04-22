@@ -21,7 +21,8 @@ public class DeathScript : MonoBehaviour
     //public GameObject LivingAmbience;
     public GameObject Corpse;
     public Image Blind;
-    public Image Light;
+    public GameObject LightObj;
+    private Image Light;
     private ActionBasedContinuousMoveProvider aBCP; 
     public static bool Dead = false;
     private ScriptableObject flyingScript;
@@ -31,6 +32,7 @@ public class DeathScript : MonoBehaviour
     public Animator CamAnim;
     public float fadeInTime = 20f; // Time in seconds for the fade-in effect
     private float alpha;
+    private float alphaLight;
     
 
     public float fadeDuration = 10f; // duration of the fade in seconds
@@ -52,12 +54,13 @@ public class DeathScript : MonoBehaviour
 
     void Start()
     {
+        Light = LightObj.GetComponent<Image>();
         aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
        // StartCoroutine(Dying());
         GhostHandLeft.SetActive(false);
         GhostHandRight.SetActive(false);
         Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 0f); // Set the alpha value of the Image color to 0
-
+        Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
         initialVolume = BirdsAudio.volume;
 
     }
@@ -65,7 +68,7 @@ public class DeathScript : MonoBehaviour
 
     void Update()
     {
-        print(BirdsAudio.volume);
+
         if (Dead)
         {
             LeftHand.SetActive(false);
@@ -73,11 +76,11 @@ public class DeathScript : MonoBehaviour
             GhostHandLeft.SetActive(true);
             GhostHandRight.SetActive(true);
             aBCP.enableFly = true;
-            Corpse.SetActive(true);
-
-           // if (!Died)
-         //   {
-                StartCoroutine(LosingSenses());
+            
+            EyeLidAnim.SetTrigger("Dead");
+            // if (!Died)
+            //   {
+            StartCoroutine(LosingSenses());
           //  }
 
         }
@@ -89,7 +92,7 @@ public class DeathScript : MonoBehaviour
  IEnumerator LosingSenses()
     {
        
-        EyeLidAnim.SetTrigger("Dead");
+        
         yield return new WaitForSeconds(2f);
         //  StartCoroutine(AudioFadeOut.FadeOut(BirdsAudio, 20f));
         //  StartCoroutine(AudioFadeOut.FadeOut(MachineAudio, 20f));
@@ -129,11 +132,12 @@ public class DeathScript : MonoBehaviour
         Died = true;
         EyeLids.SetActive(false);
         yield return new WaitForSeconds(3);
-        StartCoroutine (FadeOut());
+       
        
         StopCoroutine(FadeIn());
-     
-        
+        StartCoroutine(LightOpacity());
+        StartCoroutine(LightSize());
+
     }
 
     private IEnumerator FadeOut()
@@ -146,9 +150,64 @@ public class DeathScript : MonoBehaviour
 
         }
         Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 0f);
-        yield return new WaitForSeconds (3);
+       
+       
+    }
+    private IEnumerator LightSize()
+    {
+        Vector3 growthIncrement = new Vector3(.1f, .1f, .1f);
+        while (LightObj.transform.localScale.x < 1)
+        {
+
+            LightObj.transform.localScale += growthIncrement * Time.deltaTime;
+            yield return null;
+        }
+        if (LightObj.transform.localScale.x > 1)
+        {
+            LightObj.transform.localScale = new Vector3(1, 1, 1);
+
+        }
+        if (LightObj.transform.localScale.x == 1)
+        {
+            yield return new WaitForSeconds(2f);
+            print("fade away light now");
+        }
+    }
+    private IEnumerator LightOpacity()
+    {
+      
+        LightObj.SetActive(true);
+        while (alphaLight < 1)
+        {
+
+            Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, alphaLight);
+            alphaLight += 0.01f * Time.deltaTime;
+            yield return null;
+
+        }
+        Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 1f);
+        Corpse.SetActive(true);
+        StartCoroutine(FadeOut());
+
+        yield return new WaitForSeconds(3);
+        StartCoroutine(LightFadeOut());
+        yield return new WaitForSeconds(2);
         CamAnim.SetTrigger("rise");
     }    
+
+
+    private IEnumerator LightFadeOut()
+    {
+        while (alphaLight > 0)
+        {
+            Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, alphaLight);
+            alphaLight -= 0.1f * Time.deltaTime;
+            yield return null;
+
+        }
+        Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
+
+    }
 
    /* public IEnumerator FadeIn(Image a_image)
         {
