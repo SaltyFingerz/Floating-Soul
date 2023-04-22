@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraRaycastScript : MonoBehaviour
 {
-   
+    public static bool LookingSu;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +27,21 @@ public class CameraRaycastScript : MonoBehaviour
 
         if(Physics.Raycast(ray, out RaycastHit raycastHit))
         {
-           // raycastHit.collider.GetComponent<Renderer>().material.color = tintColor;
-           if(raycastHit.collider.gameObject.CompareTag("lady"))
+            // raycastHit.collider.GetComponent<Renderer>().material.color = tintColor;
+            if (raycastHit.collider.gameObject.CompareTag("lady"))
             {
-                print("looking at Su");
+                LookingSu = true;
+                print("looking at Su" + LookingSu);
+            }
+            else
+            {
+                LookingSu = false;
+
+                print("looking at Su" + LookingSu);
             }
         }
 
     }
+
+
 }

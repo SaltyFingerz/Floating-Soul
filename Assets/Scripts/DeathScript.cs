@@ -9,6 +9,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Serialization;
 using Unity.XR.CoreUtils;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class DeathScript : MonoBehaviour
 {
@@ -33,16 +34,17 @@ public class DeathScript : MonoBehaviour
     public float fadeInTime = 20f; // Time in seconds for the fade-in effect
     private float alpha;
     private float alphaLight;
-    
+    public CameraRaycastScript CamRay;
 
     public float fadeDuration = 10f; // duration of the fade in seconds
   
     private float initialVolume;
 
     bool Died = false;
-        
-   
 
+
+    public Transform target;
+    public float speed;
 
 
     public void StartFadeOut()
@@ -85,6 +87,23 @@ public class DeathScript : MonoBehaviour
 
         }
 
+        if(CameraRaycastScript.LookingSu)
+        {
+            // Calculate the direction to the target
+            Vector3 direction = target.position - transform.position;
+
+            // Calculate the distance to the target
+            float distance = direction.magnitude;
+
+            // Normalize the direction to get a unit vector
+            direction.Normalize();
+
+            // If the distance is greater than zero, move towards the target
+            if (distance > 0)
+            {
+                transform.position += direction * speed * Time.deltaTime;
+            }
+        }
  
     }
 
