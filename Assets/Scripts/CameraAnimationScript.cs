@@ -10,7 +10,7 @@ public class CameraAnimationScript : MonoBehaviour
     public static bool Desaturating;
     public static bool DecreaseVignette;
     public AudioClip Collapsing;
-
+    public GameObject Boletus;
     public AudioSource CollapsingSound;
 
     [SerializeField] private AudioSource NormalBreathing;
@@ -120,5 +120,10 @@ public class CameraAnimationScript : MonoBehaviour
     public void CollapsingAudioEvent()
     {
         CollapsingSound.PlayOneShot(Collapsing);
+    }
+
+    public void HideBoletus()
+    {
+        Boletus.SetActive(false);
     }
 }

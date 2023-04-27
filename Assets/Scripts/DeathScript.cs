@@ -18,6 +18,7 @@ public class DeathScript : MonoBehaviour
     public GameObject LeftHand;
     public GameObject RightHand;
     public AudioClip AmbientAudio;
+   
     public GameObject GhostHandLeft;
     public GameObject GhostHandRight;
     public GameObject EyeLids;
@@ -28,6 +29,7 @@ public class DeathScript : MonoBehaviour
     private Image Light;
     private ActionBasedContinuousMoveProvider aBCP; 
     public static bool Dead = false;
+    public static bool Possessing = false;
     private ScriptableObject flyingScript;
     public AudioSource BirdsAudio;
     public AudioSource MachineAudio;
@@ -53,7 +55,7 @@ public class DeathScript : MonoBehaviour
     public static bool WelcomeBoletus;
     private bool Darken;
     private bool Lighten;
-    private bool ResetPostExp;
+    public static bool ResetPostExp;
 
     public void StartFadeOut()
     {
@@ -87,6 +89,10 @@ public class DeathScript : MonoBehaviour
 
     void Update()
     {
+        print("darken" + Darken);
+        print("lighten" + Lighten);
+        print("ResetPExp" + ResetPostExp);
+
         if(increaseSpotLight)
         {
             LightSize();
@@ -104,11 +110,14 @@ public class DeathScript : MonoBehaviour
 
         if(Lighten)
         {
+            Darken = false;
             PPScript.IncreasePostExp();
         }
 
         if(ResetPostExp)
         {
+            Lighten = false;
+            Darken = false;
             PPScript.ResetPostExp();
         }
 
@@ -126,6 +135,17 @@ public class DeathScript : MonoBehaviour
             StartCoroutine(FadeIn());
             }
 
+        }
+
+        if( Possessing)
+        {
+            LeftHand.SetActive(true);
+            RightHand.SetActive(true);
+            GhostHandLeft.SetActive(false);
+            GhostHandRight.SetActive(false);
+            aBCP.enableFly = false;
+            EyeLids.SetActive(true);
+            EyeLidAnim.SetTrigger("Blink");
         }
 
         if(CameraRaycastScript.LookingSu)
@@ -151,7 +171,7 @@ public class DeathScript : MonoBehaviour
 
  private void LosingHearing()
     {
-        print("losing hearing called");
+       
         if (BirdsAudio.volume > 0f)
         {
             BirdsAudio.volume -= Time.deltaTime *0.05f;
@@ -229,7 +249,7 @@ public class DeathScript : MonoBehaviour
         if (LightObj.transform.localScale.x < 1)
         {
 
-            LightObj.transform.localScale += growthIncrement * Time.deltaTime;
+            LightObj.transform.localScale += growthIncrement * Time.deltaTime *2;
             
         }
         else if (LightObj.transform.localScale.x > 1)
@@ -255,7 +275,7 @@ public class DeathScript : MonoBehaviour
         {
 
             Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, alphaLight);
-            alphaLight += 0.7f * Time.deltaTime;
+            alphaLight += 0.1f * Time.deltaTime*100;
 
 
         }
@@ -271,18 +291,18 @@ public class DeathScript : MonoBehaviour
         {
             CameraAnimationScript.Vignetting = false;
             CameraAnimationScript.DecreaseVignette = true;
-            print("should call fade out");
+          
             StartCoroutine(LightFadeOut());
         }
         
         
         
-    }    
+    }
 
-
+    private bool risen;
     private IEnumerator LightFadeOut()
     {
-        print("LightFadeOutCalled");
+       
         //CameraAnimationScript.DecreaseVignette = true;
         
        
@@ -291,7 +311,7 @@ public class DeathScript : MonoBehaviour
         while (alphaLight > 0)
         {
             Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, alphaLight);
-            alphaLight -= 0.01f * Time.deltaTime;
+            alphaLight -= 0.01f * Time.deltaTime * 2;
             yield return null;
 
         }
@@ -300,8 +320,13 @@ public class DeathScript : MonoBehaviour
       Lighten = false;
         yield return new WaitForSeconds(3);
         Corpse.SetActive(true);
-        CamAnim.SetTrigger("rise");
-        
+        if (!risen)
+        {
+            CamAnim.SetTrigger("rise");
+            print("rise trigger being set");
+            risen = true;
+        }
+        yield return null; 
         //CameraAnimationScript.DecreaseVignette = false;
     }
 
