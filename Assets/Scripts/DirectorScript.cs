@@ -17,7 +17,7 @@ public class DirectorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(DeathScript.Dead)
+        if(DeathScript.WelcomeBoletus)
         {
             StartCoroutine(waitToWalk());
         }

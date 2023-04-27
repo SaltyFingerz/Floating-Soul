@@ -13,9 +13,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class DeathScript : MonoBehaviour
 {
+    public PostProcessingScript PPScript;
+
     public GameObject LeftHand;
     public GameObject RightHand;
-
+    public AudioClip AmbientAudio;
     public GameObject GhostHandLeft;
     public GameObject GhostHandRight;
     public GameObject EyeLids;
@@ -29,6 +31,7 @@ public class DeathScript : MonoBehaviour
     private ScriptableObject flyingScript;
     public AudioSource BirdsAudio;
     public AudioSource MachineAudio;
+    public AudioSource Ambience;
     public Animator EyeLidAnim;
     public Animator CamAnim;
     public float fadeInTime = 20f; // Time in seconds for the fade-in effect
@@ -39,6 +42,7 @@ public class DeathScript : MonoBehaviour
     public float fadeDuration = 10f; // duration of the fade in seconds
   
     private float initialVolume;
+    private float initialVolume2;
 
     bool Died = false;
 
@@ -46,13 +50,25 @@ public class DeathScript : MonoBehaviour
     public Transform target;
     public float speed;
 
+    public static bool WelcomeBoletus;
+    private bool Darken;
+    private bool Lighten;
+    private bool ResetPostExp;
 
     public void StartFadeOut()
     {
         BirdsAudio.volume = initialVolume;
         BirdsAudio.Play();
+
+        MachineAudio.volume = initialVolume2;
+        MachineAudio.Play();
     }
 
+    public void StartFadeIn()
+    {
+        Ambience.volume = 0.05f;
+        Ambience.Play();
+    }
 
     void Start()
     {
@@ -64,12 +80,37 @@ public class DeathScript : MonoBehaviour
         Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 0f); // Set the alpha value of the Image color to 0
         Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
         initialVolume = BirdsAudio.volume;
+        initialVolume2 = MachineAudio.volume;
 
     }
 
 
     void Update()
     {
+        if(increaseSpotLight)
+        {
+            LightSize();
+            LightOpacity();
+        }
+
+        if(isLosingHearing) { LosingHearing(); }
+
+        print("lighten" + Lighten);
+
+        if(Darken) {
+
+            PPScript.DecreasePostExp();
+        }
+
+        if(Lighten)
+        {
+            PPScript.IncreasePostExp();
+        }
+
+        if(ResetPostExp)
+        {
+            PPScript.ResetPostExp();
+        }
 
         if (Dead)
         {
@@ -80,10 +121,10 @@ public class DeathScript : MonoBehaviour
             aBCP.enableFly = true;
             
             EyeLidAnim.SetTrigger("Dead");
-            // if (!Died)
-            //   {
-            StartCoroutine(LosingSenses());
-          //  }
+             if (!Died)
+               {
+            StartCoroutine(FadeIn());
+            }
 
         }
 
@@ -108,39 +149,41 @@ public class DeathScript : MonoBehaviour
     }
 
 
- IEnumerator LosingSenses()
+ private void LosingHearing()
     {
-       
-        
-        yield return new WaitForSeconds(2f);
-        //  StartCoroutine(AudioFadeOut.FadeOut(BirdsAudio, 20f));
-        //  StartCoroutine(AudioFadeOut.FadeOut(MachineAudio, 20f));
-        //  yield return new WaitForSeconds(2f);
-
+        print("losing hearing called");
         if (BirdsAudio.volume > 0f)
         {
-            BirdsAudio.volume -= Time.deltaTime / (fadeDuration*100);
+            BirdsAudio.volume -= Time.deltaTime *0.05f;
         }
         else
         {
             BirdsAudio.volume = 0f;
             BirdsAudio.Stop();
-            if (!Died)
-            {
-                StartCoroutine(FadeIn());
-            }
+
+        }
+
+        if (MachineAudio.volume > 0f)
+        {
+            MachineAudio.volume -= Time.deltaTime *0.05f ;
+        }
+        else
+        {
+            MachineAudio.volume = 0f;
+            MachineAudio.Stop();
+
         }
 
         // Start the coroutine to fade in the Image over time
-        StopCoroutine(LosingSenses());
-       
-        yield return new WaitForSeconds(2);
-       // EyeLids.SetActive(false);
+       // StopCoroutine(LosingHearing());
+        
     }
+    private bool increaseSpotLight;
+    private bool isLosingHearing;
     private IEnumerator FadeIn()
     {
-       
-        while (alpha < 1)
+        Darken = true;
+     /*   while (alpha < 1)
         {
             Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, alpha);
             alpha += 0.5f * Time.deltaTime;
@@ -148,14 +191,20 @@ public class DeathScript : MonoBehaviour
 
         }
         Blind.color = new Color(Blind.color.r, Blind.color.g, Blind.color.b, 1f);
+     */
         Died = true;
         EyeLids.SetActive(false);
-        yield return new WaitForSeconds(3);
-       
-       
-        StopCoroutine(FadeIn());
-        StartCoroutine(LightOpacity());
-        StartCoroutine(LightSize());
+        isLosingHearing = true;
+        yield return new WaitForSeconds(4);
+
+
+        
+        increaseSpotLight = true;
+        
+        Lighten = true;
+        Darken = false;
+        increaseSpotLight = true;
+      
 
     }
 
@@ -172,60 +221,88 @@ public class DeathScript : MonoBehaviour
        
        
     }
-    private IEnumerator LightSize()
+    private void LightSize()
     {
-        Vector3 growthIncrement = new Vector3(.1f, .1f, .1f);
-        while (LightObj.transform.localScale.x < 1)
+       
+        CameraAnimationScript.Desaturating = false;
+        Vector3 growthIncrement = new Vector3(.2f, .2f, .2f);
+        if (LightObj.transform.localScale.x < 1)
         {
 
             LightObj.transform.localScale += growthIncrement * Time.deltaTime;
-            yield return null;
+            
         }
-        if (LightObj.transform.localScale.x > 1)
+        else if (LightObj.transform.localScale.x > 1)
         {
             LightObj.transform.localScale = new Vector3(1, 1, 1);
 
         }
-        if (LightObj.transform.localScale.x == 1)
+        if (LightObj.transform.localScale.x > .3f)
         {
-            yield return new WaitForSeconds(2f);
-            print("fade away light now");
+            CameraAnimationScript.Vignetting = false;
+            CameraAnimationScript.DecreaseVignette = true;
+            
+           
+
         }
     }
-    private IEnumerator LightOpacity()
+   private void LightOpacity()
     {
-      
+        Ambience.PlayOneShot(AmbientAudio);
+
         LightObj.SetActive(true);
-        while (alphaLight < 1)
+        if (alphaLight < 1)
         {
 
             Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, alphaLight);
-            alphaLight += 0.01f * Time.deltaTime;
-            yield return null;
+            alphaLight += 0.7f * Time.deltaTime;
+
 
         }
-        Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 1f);
-        Corpse.SetActive(true);
-        StartCoroutine(FadeOut());
+        else {
+            Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 1f);
+        }
+      
+        
+       // StartCoroutine(FadeOut());
 
-        yield return new WaitForSeconds(3);
-        StartCoroutine(LightFadeOut());
-        yield return new WaitForSeconds(2);
-        CamAnim.SetTrigger("rise");
+       
+        if (alphaLight > 0.9f && LightObj.transform.localScale.x > .3f)
+        {
+            CameraAnimationScript.Vignetting = false;
+            CameraAnimationScript.DecreaseVignette = true;
+            print("should call fade out");
+            StartCoroutine(LightFadeOut());
+        }
+        
+        
+        
     }    
 
 
     private IEnumerator LightFadeOut()
     {
+        print("LightFadeOutCalled");
+        //CameraAnimationScript.DecreaseVignette = true;
+        
+       
+        Darken = false;
+        
         while (alphaLight > 0)
         {
             Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, alphaLight);
-            alphaLight -= 0.1f * Time.deltaTime;
+            alphaLight -= 0.01f * Time.deltaTime;
             yield return null;
 
         }
         Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
-
+        ResetPostExp = true;
+      Lighten = false;
+        yield return new WaitForSeconds(3);
+        Corpse.SetActive(true);
+        CamAnim.SetTrigger("rise");
+        
+        //CameraAnimationScript.DecreaseVignette = false;
     }
 
    /* public IEnumerator FadeIn(Image a_image)
