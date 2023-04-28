@@ -5,6 +5,7 @@ using UnityEngine;
 public class PosessionScript : MonoBehaviour
 {
     public Animator camAnim;
+    
    
     // Start is called before the first frame update
     void Start()
@@ -19,26 +20,5 @@ public class PosessionScript : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("lady"))
-        {
-            print("inzone to possess");
-            camAnim.SetTrigger("possess");
-            DeathScript.Possessing = true;
-            print("possessing" + DeathScript.Possessing);
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-
-        if (other.CompareTag("lady"))
-        {
-            print("inzone to possess");
-            camAnim.SetTrigger("possess");
-            DeathScript.Possessing = true;
-            print("possessing" + DeathScript.Possessing);
-        }
-    }
+    
 }

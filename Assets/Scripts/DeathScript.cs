@@ -53,8 +53,8 @@ public class DeathScript : MonoBehaviour
     public float speed;
 
     public static bool WelcomeBoletus;
-    private bool Darken;
-    private bool Lighten;
+    public static bool Darken;
+    public static bool Lighten;
     public static bool ResetPostExp;
 
     public void StartFadeOut()
@@ -139,6 +139,18 @@ public class DeathScript : MonoBehaviour
 
         if( Possessing)
         {
+            StartCoroutine(PossessingTime());
+        }
+
+        IEnumerator PossessingTime()
+        {
+            ResetPostExp = true;
+            Lighten = false;
+            increaseSpotLight = false;
+            LightObj.SetActive(false);
+
+            Dead = false;
+            yield return new WaitForSeconds(2);
             LeftHand.SetActive(true);
             RightHand.SetActive(true);
             GhostHandLeft.SetActive(false);
@@ -146,25 +158,35 @@ public class DeathScript : MonoBehaviour
             aBCP.enableFly = false;
             EyeLids.SetActive(true);
             EyeLidAnim.SetTrigger("Blink");
+            Possessing = false;
         }
+
+
 
         if(CameraRaycastScript.LookingSu)
         {
-            // Calculate the direction to the target
-            Vector3 direction = target.position - transform.position;
-
-            // Calculate the distance to the target
-            float distance = direction.magnitude;
-
-            // Normalize the direction to get a unit vector
-            direction.Normalize();
-
-            // If the distance is greater than zero, move towards the target
-            if (distance > 0)
+            if (AnimationEventSu.MindOpen)
             {
-                transform.position += direction * speed * Time.deltaTime;
+                Lighten = true;
+                Darken = false;
+                increaseSpotLight = true;
+                // Calculate the direction to the target
+                Vector3 direction = target.position - transform.position;
+
+                // Calculate the distance to the target
+                float distance = direction.magnitude;
+
+                // Normalize the direction to get a unit vector
+                direction.Normalize();
+
+                // If the distance is greater than zero, move towards the target
+                if (distance > 0)
+                {
+                    transform.position += direction * speed * Time.deltaTime;
+                }
             }
         }
+       
  
     }
 
@@ -220,7 +242,7 @@ public class DeathScript : MonoBehaviour
 
         
         increaseSpotLight = true;
-        
+        CamAnim.SetBool("dead", false);
         Lighten = true;
         Darken = false;
         increaseSpotLight = true;
@@ -291,7 +313,7 @@ public class DeathScript : MonoBehaviour
         {
             CameraAnimationScript.Vignetting = false;
             CameraAnimationScript.DecreaseVignette = true;
-          
+           
             StartCoroutine(LightFadeOut());
         }
         
@@ -322,26 +344,53 @@ public class DeathScript : MonoBehaviour
         Corpse.SetActive(true);
         if (!risen)
         {
-            CamAnim.SetTrigger("rise");
+            CamAnim.SetBool("pain", false);
+            CamAnim.SetBool("rise", true);
+            yield return new WaitForSeconds(1);
+            CamAnim.SetBool("rise", false);
             print("rise trigger being set");
             risen = true;
         }
+
+       
         yield return null; 
         //CameraAnimationScript.DecreaseVignette = false;
     }
 
-   /* public IEnumerator FadeIn(Image a_image)
+    /* public IEnumerator FadeIn(Image a_image)
+         {
+             a_image.enabled = true;
+             for (float i = 0; i <= 1; i += Time.deltaTime)
+             {
+                 // set color with i as alpha
+                 a_image.color = new Color(1, 1, 1, i);
+                 yield return null;
+             }
+         }
+    */
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("lady"))
         {
-            a_image.enabled = true;
-            for (float i = 0; i <= 1; i += Time.deltaTime)
-            {
-                // set color with i as alpha
-                a_image.color = new Color(1, 1, 1, i);
-                yield return null;
-            }
+           
+            CamAnim.SetBool("possess", true);
+          
+           
         }
-   */
+    }
 
+    private void OnTriggerStay(Collider other)
+    {
 
+        if (other.CompareTag("lady"))
+        {
+           
+            CamAnim.SetBool("possess", true);
+          
+            
+        }
+    }
 
 }

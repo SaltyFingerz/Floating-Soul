@@ -72,7 +72,7 @@ public class CameraAnimationScript : MonoBehaviour
     IEnumerator DyingRoutine5678()
     {
         NormalBreathing.Stop();
-        anim.SetTrigger("pain");
+        anim.SetBool("pain", true);
         
         EyeLidAnim.SetTrigger("Pain");
         Desaturating = true;
@@ -95,7 +95,8 @@ public class CameraAnimationScript : MonoBehaviour
         fastestHeartAttack.Play();
         Vignetting = true;
         yield return new WaitForSeconds(5f);
-        anim.SetTrigger("dead");
+        anim.SetBool("pain", false);
+        anim.SetBool("dead", true);
       
        
 
@@ -124,6 +125,17 @@ public class CameraAnimationScript : MonoBehaviour
 
     public void HideBoletus()
     {
+        if (Boletus.activeSelf)
+        {
+            StartCoroutine(HideBoletusTime());
+        }
+
+    }
+
+    IEnumerator HideBoletusTime()
+    {
+        yield return new WaitForSeconds(2);
+        DeathScript.Possessing = true;
         Boletus.SetActive(false);
     }
 }

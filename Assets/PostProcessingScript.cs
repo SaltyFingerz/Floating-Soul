@@ -65,6 +65,7 @@ public class PostProcessingScript : MonoBehaviour
     {
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > -10.0)
         {
+            print("increasing PostExp");
             m_ColorAd.postExposure.value -= 2f * Time.deltaTime;
         }
     }
@@ -74,12 +75,16 @@ public class PostProcessingScript : MonoBehaviour
     {
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value < 15)
         {
+            print("decreasing PostExp");
             m_ColorAd.postExposure.value += 2f * Time.deltaTime;
         }
     }
 
     public void ResetPostExp()
     {
+        DeathScript.Lighten = false;
+        DeathScript.Darken = false;
+
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > 0)
         {
             m_ColorAd.postExposure.value -= 0.2f * Time.deltaTime *10;
@@ -93,15 +98,18 @@ public class PostProcessingScript : MonoBehaviour
             print("exposure being increased");
         }
 
-         if(M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value <  0.4f && m_ColorAd.postExposure.value > -0.4f)
+         if(M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value <  0.5f && m_ColorAd.postExposure.value > -0.5f)
         {
             m_ColorAd.postExposure.value = 0;
             print("exposure zero");
-            if (m_ColorAd.postExposure.value == 0)
-            {
+            
+                
+                DeathScript.Lighten = false;
+                DeathScript.Darken = false;
                 DeathScript.ResetPostExp = false;
+
                 return;
-            }
+           
         }
     }    
 
