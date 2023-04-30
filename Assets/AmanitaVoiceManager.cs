@@ -9,6 +9,15 @@ public class AmanitaVoiceManager : MonoBehaviour
     public AudioClip RingSpeech;
     public GameObject EngagementRing;
     public CameraRaycastScript CameraRaycast;
+    public AudioClip[] TimeToPutKettle;
+    public AudioClip[] WhilePuttingKettle;
+    public AudioClip[] ToastOn;
+    public AudioClip KettleOnTeaToastAndRing;
+    private bool isKettleTime;
+    public static bool isOnStove;
+    public static bool isTouchingKettle;
+    private bool isToastTime;
+    bool isToasting;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +34,55 @@ public class AmanitaVoiceManager : MonoBehaviour
                 StartCoroutine(StartRingSpeech());
             }
         }
+
+        if (isKettleTime && !isOnStove)
+        {
+            if (!AmanitaVoice.isPlaying)
+            {
+                StartCoroutine(PromptDelay());
+            }
+        }
+
+        if(isToastTime && !AmanitaVoice.isPlaying)
+        {
+            StartCoroutine(PromptToast());
+        }
+
+    }
+
+    IEnumerator PromptDelay()
+    {
+        isKettleTime = false;
+        yield return new WaitForSeconds(4);
+        if (!isOnStove)
+        {
+            if (!isTouchingKettle)
+            {
+                TimeToPutTheKettleOn();
+            }
+            isKettleTime = true;
+        }
+    }
+
+    IEnumerator PromptToast()
+    {
+        
+        yield return new WaitForSeconds(4);
+        if(isToastTime)
+        {
+            AudioClip clip = ToastOn[UnityEngine.Random.Range(0, ToastOn.Length)];
+            AmanitaVoice.PlayOneShot(clip);
+        }
+
+    }
+    public void PuttingKettleOn()
+    {
+        if (!AmanitaVoice.isPlaying && !isOnStove)
+        {
+            AudioClip clip = WhilePuttingKettle[UnityEngine.Random.Range(0, WhilePuttingKettle.Length)];
+            AmanitaVoice.PlayOneShot(clip);
+        }
+
     }
 
 
@@ -44,6 +102,19 @@ public class AmanitaVoiceManager : MonoBehaviour
         AmanitaVoice.PlayOneShot(RingSpeech);
         yield return new WaitForSeconds(10);
         EngagementRing.SetActive(false);
+        AmanitaVoice.PlayOneShot(KettleOnTeaToastAndRing);
+        yield return new WaitForSeconds(10);
+        isKettleTime = true;
        
     }
+
+
+
+    public void TimeToPutTheKettleOn()
+    {
+        AudioClip clip = TimeToPutKettle[UnityEngine.Random.Range(0, TimeToPutKettle.Length)];
+        AmanitaVoice.PlayOneShot(clip);
+    }
+
+   
 }

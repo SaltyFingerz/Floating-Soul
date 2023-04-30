@@ -1,0 +1,87 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class KettleScript : MonoBehaviour
+{
+    public ParticleSystem Steam;
+    AudioSource SteamSFX;
+
+    [SerializeField] private float _emissionRateIncreaseRate;
+    [SerializeField] private float _timeToIncreaseEmissionRate;
+
+    private float _timeElapsed;
+
+
+    private void Start()
+    {
+        SteamSFX = GetComponent<AudioSource>();
+    }
+    private void Update()
+    {
+        if (AmanitaVoiceManager.isOnStove)
+        {
+            StartCoroutine(IncreaseSteamGradually());
+        }
+      
+    }
+
+  IEnumerator IncreaseSteamGradually()
+    {
+        var emission = Steam.emission;
+        emission.rateOverTime = 2;
+      
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 5;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 10;
+     //   SteamSFX.volume = 0.3f;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 15;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 20;
+     //   SteamSFX.volume = 0.4f;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 30;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 40;
+     //   SteamSFX.volume = 0.5f;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 50;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 60;
+     //   SteamSFX.volume = 0.6f;
+        yield return new WaitForSeconds(2);
+        emission.rateOverTime = 80;
+     //   SteamSFX.volume = 0.8f;
+        yield return new WaitForSeconds(2);
+        SteamSFX.volume = 1f;
+        emission.rateOverTime = 100;
+
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("hob"))
+        {
+            Steam.Play();
+            SteamSFX.Play();
+            _timeElapsed = 0f;
+            AmanitaVoiceManager.isOnStove = true;
+            Steam.Play();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("hob"))
+        {
+            Steam.Stop();
+            AmanitaVoiceManager.isOnStove = false;
+        }
+    }
+
+
+}
