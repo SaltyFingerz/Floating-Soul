@@ -87,14 +87,14 @@ public class PostProcessingScript : MonoBehaviour
 
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > 0)
         {
-            m_ColorAd.postExposure.value -= 0.2f * Time.deltaTime *10;
+            m_ColorAd.postExposure.value -= 0.2f * Time.deltaTime *15;
             print("exposure being decreased");
         }
 
         else if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value < 0)
 
         {
-            m_ColorAd.postExposure.value += 0.2f * Time.deltaTime *10;
+            m_ColorAd.postExposure.value += 0.2f * Time.deltaTime *15;
             print("exposure being increased");
         }
 

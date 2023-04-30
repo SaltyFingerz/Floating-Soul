@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraRaycastScript : MonoBehaviour
 {
     public static bool LookingSu;
+    public static bool lookingAtRing;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +39,15 @@ public class CameraRaycastScript : MonoBehaviour
                 LookingSu = false;
 
                 print("looking at Su" + LookingSu);
+            }
+
+            if(raycastHit.collider.gameObject.CompareTag("ring"))
+            {
+                lookingAtRing = true;
+            }
+            else
+            {
+                lookingAtRing= false;
             }
         }
 
