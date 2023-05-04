@@ -12,7 +12,11 @@ public class CameraAnimationScript : MonoBehaviour
     public AudioClip Collapsing;
     public GameObject Boletus;
     public AudioSource CollapsingSound;
-
+    public AudioSource BreathingFast;
+    public AudioSource Screaming;
+    public AudioClip Scream1;
+    public AudioClip Scream2;
+    public AudioClip Scream3;
     [SerializeField] private AudioSource NormalBreathing;
     [SerializeField] private AudioSource heartAttack;
 
@@ -34,17 +38,23 @@ public class CameraAnimationScript : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-   
+
+    public void DanDanDan()
+    {
+        StartCoroutine(DyingRoutine5678());
+    }
     void Update()
     {
        
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(DyingRoutine5678());
-          
+
+            DanDanDan();
            
         }
+
+       
 
         if(Vignetting) {
             PPScript.IncreaseVignette();
@@ -69,7 +79,7 @@ public class CameraAnimationScript : MonoBehaviour
         }
     }
 
-    IEnumerator DyingRoutine5678()
+     IEnumerator DyingRoutine5678()
     {
         NormalBreathing.Stop();
         anim.SetBool("pain", true);
@@ -80,6 +90,7 @@ public class CameraAnimationScript : MonoBehaviour
         normalHeartbeat.Stop();
         faster1Heartbeat.Play();
         yield return new WaitForSeconds(5f);
+        BreathingFast.Play();
         
         faster1Heartbeat.Stop();
         faster2Heartbeat.Play();
@@ -88,13 +99,19 @@ public class CameraAnimationScript : MonoBehaviour
         faster2Heartbeat.Stop();
         faster3Heartbeat.Play();
         
+        
         print("Desaturating" + Desaturating);
         yield return new WaitForSeconds(4f);
         PPScript.DecreaseSaturation();
         faster3Heartbeat.Stop();
+        BreathingFast.Stop();
         fastestHeartAttack.Play();
         Vignetting = true;
-        yield return new WaitForSeconds(5f);
+        Screaming.PlayOneShot(Scream1);
+        yield return new WaitForSeconds(2f);
+        Screaming.PlayOneShot(Scream2);
+        yield return new WaitForSeconds(1f);
+        Screaming.PlayOneShot(Scream3);
         anim.SetBool("pain", false);
         anim.SetBool("dead", true);
       

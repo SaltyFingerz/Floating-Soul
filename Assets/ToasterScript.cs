@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class ToasterScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public ParticleSystem Smoke;
+    public AudioSource ToasterOnSound;
+    public Animator BreadAnim;
+    public AmanitaVoiceManager AmanitaVoice;
+    
+public void TurnOnToaster()
     {
-        
+        if (AmanitaVoiceManager.toasterWorking)
+        {
+            AmanitaVoiceManager.isToasting = true;
+            ToasterOnSound.Play();
+            StartCoroutine(SmokeProgression());
+            BreadAnim.SetTrigger("In");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator SmokeProgression()
     {
-        
+        yield return new WaitForSeconds(4);
+        AmanitaVoice.WhereIsBoletusPlay();
+        yield return new WaitForSeconds(3);
+        Smoke.Play();
+
+
     }
 }

@@ -9,15 +9,26 @@ public class AmanitaVoiceManager : MonoBehaviour
     public AudioClip RingSpeech;
     public GameObject EngagementRing;
     public CameraRaycastScript CameraRaycast;
+    public SmokeDetectorScript SmokeDetector;
     public AudioClip[] TimeToPutKettle;
     public AudioClip[] WhilePuttingKettle;
     public AudioClip[] ToastOn;
     public AudioClip KettleOnTeaToastAndRing;
+    public AudioClip WhereIsBoletus;
+    public AudioClip KettleSounds;
+    public AudioClip WhatIfShesNot;
+    public AudioClip IShouldTakeKettleOff;
+    public AudioClip MarriageCommitment;
+    public AudioClip KettleDefinitelyBoiling;
+    public AudioClip WhereIsShe;
+    public AudioClip SmokeOhNo;
+    public AudioClip AhWhatAboutBoletus;
     private bool isKettleTime;
     public static bool isOnStove;
     public static bool isTouchingKettle;
     private bool isToastTime;
-    bool isToasting;
+    public static bool isToasting;
+    public CameraAnimationScript camAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,10 +54,24 @@ public class AmanitaVoiceManager : MonoBehaviour
             }
         }
 
-        if(isToastTime && !AmanitaVoice.isPlaying)
+       if(isOnStove &&!isToasting)
         {
-            StartCoroutine(PromptToast());
+            isToastTime = true;
         }
+
+      
+
+
+        if(isToasting)
+        {
+            isToastTime = false;
+        }
+
+       /* if(isToastTime && !AmanitaVoice.isPlaying)
+        {
+            PromptToast();
+        }
+       */
 
     }
 
@@ -64,15 +89,42 @@ public class AmanitaVoiceManager : MonoBehaviour
         }
     }
 
-    IEnumerator PromptToast()
+    public void PromptToast()
     {
-        
-        yield return new WaitForSeconds(4);
-        if(isToastTime)
+        isToastTime = false;
+       
+       
+      StartCoroutine(ToastPromptRepeat());
+    
+
+        if (!isToasting)
         {
-            AudioClip clip = ToastOn[UnityEngine.Random.Range(0, ToastOn.Length)];
-            AmanitaVoice.PlayOneShot(clip);
+            isToastTime = true;
         }
+
+    }
+
+    IEnumerator ToastPromptRepeat()
+    {
+        yield return new WaitForSeconds(6);
+        AudioClip clip = ToastOn[UnityEngine.Random.Range(0, ToastOn.Length)];
+        if(!AmanitaVoice.isPlaying && !isToasting)
+        AmanitaVoice.PlayOneShot(clip); 
+        yield return new WaitForSeconds(6);
+        if (!AmanitaVoice.isPlaying && !isToasting)
+            AmanitaVoice.PlayOneShot(clip);
+        yield return new WaitForSeconds(6);
+        if (!AmanitaVoice.isPlaying && !isToasting)
+            AmanitaVoice.PlayOneShot(clip);
+        yield return new WaitForSeconds(6);
+        if (!AmanitaVoice.isPlaying && !isToasting)
+            AmanitaVoice.PlayOneShot(clip);
+        yield return new WaitForSeconds(6);
+        if (!AmanitaVoice.isPlaying && !isToasting)
+            AmanitaVoice.PlayOneShot(clip);
+        yield return new WaitForSeconds(15);
+        if (!AmanitaVoice.isPlaying && !isToasting)
+            AmanitaVoice.PlayOneShot(clip);
 
     }
     public void PuttingKettleOn()
@@ -109,7 +161,70 @@ public class AmanitaVoiceManager : MonoBehaviour
     }
 
 
+    public void WhereIsBoletusPlay()
+    {
+        if (!AmanitaVoice.isPlaying)
+        {
+            StartCoroutine(WorriedThoughtsOverlay());
+        }
+        
+    }
 
+    public static bool toasterWorking = true;
+    private bool smoking = false;
+    IEnumerator WorriedThoughtsOverlay()
+    {
+
+        toasterWorking = false;
+
+            AmanitaVoice.PlayOneShot(WhereIsBoletus);
+        
+        yield return new WaitForSeconds(16);
+
+
+                AmanitaVoice.PlayOneShot(KettleSounds);
+  
+    
+            yield return new WaitForSeconds(2f);
+            AmanitaVoice.PlayOneShot(WhatIfShesNot);
+           yield return new WaitForSeconds(3);
+        AmanitaVoice.PlayOneShot(IShouldTakeKettleOff);
+        yield return new WaitForSeconds(2);
+        AmanitaVoice.PlayOneShot(MarriageCommitment);
+        yield return new WaitForSeconds(4);
+        AmanitaVoice.PlayOneShot(KettleDefinitelyBoiling);
+        yield return new WaitForSeconds(3);
+        AmanitaVoice.PlayOneShot(WhereIsShe);
+        yield return new WaitForSeconds(2);
+        smoking = true;
+
+       
+
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("zone") && smoking &&!finalAminta)
+        {
+            StartCoroutine(OhNoSmokePlay());
+        }
+    }
+    bool finalAminta = false;
+    public IEnumerator OhNoSmokePlay()
+    {
+        if (!AmanitaVoice.isPlaying)
+        {
+
+            finalAminta = true;
+            AmanitaVoice.PlayOneShot(SmokeOhNo);
+            yield return new WaitForSeconds(5);
+            SmokeDetector.PlayAlarm();
+            AmanitaVoice.PlayOneShot(AhWhatAboutBoletus);
+            yield return new WaitForSeconds(10);
+            camAnim.DanDanDan();
+        }
+    }
     public void TimeToPutTheKettleOn()
     {
         AudioClip clip = TimeToPutKettle[UnityEngine.Random.Range(0, TimeToPutKettle.Length)];

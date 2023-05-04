@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public class KettleScript : MonoBehaviour
 {
     public ParticleSystem Steam;
     AudioSource SteamSFX;
-
+    public AmanitaVoiceManager AmanitaVoice;
     [SerializeField] private float _emissionRateIncreaseRate;
     [SerializeField] private float _timeToIncreaseEmissionRate;
-
+    private Rigidbody rb;
     private float _timeElapsed;
 
 
     private void Start()
     {
         SteamSFX = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody>();
     }
     private void Update()
     {
@@ -29,34 +31,40 @@ public class KettleScript : MonoBehaviour
 
   IEnumerator IncreaseSteamGradually()
     {
+        SteamSFX.volume = 0.05f;
         var emission = Steam.emission;
         emission.rateOverTime = 2;
       
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 5;
         yield return new WaitForSeconds(2);
+        SteamSFX.volume = 0.1f;
         emission.rateOverTime = 10;
      //   SteamSFX.volume = 0.3f;
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 15;
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 20;
-     //   SteamSFX.volume = 0.4f;
+        SteamSFX.volume = 0.15f;
+        //   SteamSFX.volume = 0.4f;
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 30;
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 40;
-     //   SteamSFX.volume = 0.5f;
+        SteamSFX.volume = 0.2f;
+        //   SteamSFX.volume = 0.5f;
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 50;
         yield return new WaitForSeconds(2);
         emission.rateOverTime = 60;
-     //   SteamSFX.volume = 0.6f;
+        SteamSFX.volume = 0.3f;
+        //   SteamSFX.volume = 0.6f;
         yield return new WaitForSeconds(2);
+        SteamSFX.volume = 0.4f;
         emission.rateOverTime = 80;
      //   SteamSFX.volume = 0.8f;
-        yield return new WaitForSeconds(2);
-        SteamSFX.volume = 1f;
+        yield return new WaitForSeconds(10);
+        SteamSFX.volume = 0.5f;
         emission.rateOverTime = 100;
 
     }
@@ -66,11 +74,14 @@ public class KettleScript : MonoBehaviour
     {
         if(other.CompareTag("hob"))
         {
+          
             Steam.Play();
             SteamSFX.Play();
             _timeElapsed = 0f;
             AmanitaVoiceManager.isOnStove = true;
+            AmanitaVoice.PromptToast();
             Steam.Play();
+            
         }
     }
 
