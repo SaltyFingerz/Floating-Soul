@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
+
 
 public class CameraAnimationScript : MonoBehaviour
 {
     private Animator anim;
     public Animator EyeLidAnim;
+    public BoletusBodyVoiceScript BoletusVoice;
+    public BoletusInternalMonologue BoletusInternal;
+ 
     public static bool Vignetting;
     public static bool Desaturating;
     public static bool DecreaseVignette;
@@ -31,8 +36,16 @@ public class CameraAnimationScript : MonoBehaviour
 
     public PostProcessingScript PPScript;
 
-    // Start is called before the first frame update
-    void Start()
+
+
+ 
+
+
+
+
+
+// Start is called before the first frame update
+void Start()
     {
 
         anim = GetComponent<Animator>();
@@ -45,6 +58,7 @@ public class CameraAnimationScript : MonoBehaviour
     }
     void Update()
     {
+
        
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -86,11 +100,12 @@ public class CameraAnimationScript : MonoBehaviour
         
         EyeLidAnim.SetTrigger("Pain");
         Desaturating = true;
-        heartAttack.Play();
+        BreathingFast.Play();
         normalHeartbeat.Stop();
         faster1Heartbeat.Play();
         yield return new WaitForSeconds(5f);
-        BreathingFast.Play();
+        heartAttack.Play();
+        
         
         faster1Heartbeat.Stop();
         faster2Heartbeat.Play();
@@ -98,7 +113,7 @@ public class CameraAnimationScript : MonoBehaviour
         yield return new WaitForSeconds(4f);
         faster2Heartbeat.Stop();
         faster3Heartbeat.Play();
-        
+        PPScript.IncreaseDoF();
         
         print("Desaturating" + Desaturating);
         yield return new WaitForSeconds(4f);
@@ -107,13 +122,17 @@ public class CameraAnimationScript : MonoBehaviour
         BreathingFast.Stop();
         fastestHeartAttack.Play();
         Vignetting = true;
+        
+        yield return new WaitForSeconds(9f);
         Screaming.PlayOneShot(Scream1);
-        yield return new WaitForSeconds(2f);
-        Screaming.PlayOneShot(Scream2);
-        yield return new WaitForSeconds(1f);
-        Screaming.PlayOneShot(Scream3);
         anim.SetBool("pain", false);
         anim.SetBool("dead", true);
+        yield return new WaitForSeconds(1f);
+        Screaming.PlayOneShot(Scream2);
+        
+        yield return new WaitForSeconds(1f);
+        Screaming.PlayOneShot(Scream3);
+        
       
        
 
@@ -133,6 +152,8 @@ public class CameraAnimationScript : MonoBehaviour
     public void WelcomeBoletusEvent()
     {
         DeathScript.WelcomeBoletus = true;
+        BoletusVoice.AmanitaCallingByB();
+
     }
 
     public void CollapsingAudioEvent()
@@ -140,9 +161,11 @@ public class CameraAnimationScript : MonoBehaviour
         CollapsingSound.PlayOneShot(Collapsing);
     }
 
+    bool hidingBoletus = false;
     public void HideBoletus()
     {
-        if (Boletus.activeSelf)
+      
+        if (Boletus.activeSelf && !hidingBoletus)
         {
             StartCoroutine(HideBoletusTime());
         }
@@ -151,8 +174,10 @@ public class CameraAnimationScript : MonoBehaviour
 
     IEnumerator HideBoletusTime()
     {
+        hidingBoletus = true;
         yield return new WaitForSeconds(2);
         DeathScript.Possessing = true;
         Boletus.SetActive(false);
+        BoletusInternal.StartBoletusMonologue();
     }
 }

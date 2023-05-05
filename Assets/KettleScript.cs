@@ -76,11 +76,12 @@ public class KettleScript : MonoBehaviour
         {
           
             Steam.Play();
-            SteamSFX.Play();
+           
             _timeElapsed = 0f;
             AmanitaVoiceManager.isOnStove = true;
             AmanitaVoice.PromptToast();
-            Steam.Play();
+
+            StartCoroutine(FreezeKettle());
             
         }
     }
@@ -94,5 +95,15 @@ public class KettleScript : MonoBehaviour
         }
     }
 
+    IEnumerator FreezeKettle()
+    {
+        yield return new WaitForSeconds(2);
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        yield return new WaitForSeconds(2);
+        if (!SteamSFX.isPlaying)
+        {
+            SteamSFX.Play();
+        }
+    }
 
 }

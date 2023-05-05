@@ -14,9 +14,10 @@ public class AnimationEventSu : MonoBehaviour
 
     IEnumerator WaitToCry()
     {
-        yield return new WaitForSeconds(3);
-        PromptEnter.SetActive(true);
+        yield return new WaitForSeconds(7);
+       // PromptEnter.SetActive(true);
         MindOpen = true;
+        print("mind open" + MindOpen);
 
     }
 

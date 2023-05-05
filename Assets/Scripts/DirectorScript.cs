@@ -27,7 +27,6 @@ public class DirectorScript : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         animDoor.SetTrigger("Open");
-        yield return new WaitForSeconds(1);
         animBoletus.SetTrigger("Walk");
 
     }

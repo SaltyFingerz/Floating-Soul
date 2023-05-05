@@ -19,6 +19,20 @@ public class PostProcessingScript : MonoBehaviour
 
     }
 
+    public void IncreaseDoF()
+    {
+        while (M_PPVol.profile.TryGet<DepthOfField>(out m_DoF) && m_DoF.focusDistance.value>0.11f)
+        {
+            m_DoF.focusDistance.value -= 0.1f*Time.deltaTime;
+        }
+    }
+    public void ZeroDoF()
+    {
+        if (M_PPVol.profile.TryGet<DepthOfField>(out m_DoF) && m_DoF.active)
+        {
+            m_DoF.active = false;
+        }
+    }
     public void IncreaseVignette()
     {
         if (M_PPVol.profile.TryGet<Vignette>(out m_Vignette) && m_Vignette.intensity.value < 1f)

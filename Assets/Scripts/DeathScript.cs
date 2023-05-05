@@ -14,11 +14,12 @@ using static UnityEngine.GraphicsBuffer;
 public class DeathScript : MonoBehaviour
 {
     public PostProcessingScript PPScript;
-
+    public BoletusBodyVoiceScript BoletusVoice;
     public GameObject LeftHand;
     public GameObject RightHand;
     public AudioClip AmbientAudio;
-   
+    public GameObject BoletusRightHand;
+    public GameObject BoletusLeftHand;
     public GameObject GhostHandLeft;
     public GameObject GhostHandRight;
     public GameObject EyeLids;
@@ -27,13 +28,16 @@ public class DeathScript : MonoBehaviour
     public Image Blind;
     public GameObject LightObj;
     private Image Light;
-    private ActionBasedContinuousMoveProvider aBCP; 
+    private ActionBasedContinuousMoveProvider aBCP;
+    private ActionBasedContinuousTurnProvider aBCTP;
     public static bool Dead = false;
     public static bool Possessing = false;
     private ScriptableObject flyingScript;
     public AudioSource BirdsAudio;
     public AudioSource MachineAudio;
+    public AudioSource SmokeAlarm;
     public AudioSource Ambience;
+    public AudioSource KettleAudio;
     public Animator EyeLidAnim;
     public Animator CamAnim;
     public float fadeInTime = 20f; // Time in seconds for the fade-in effect
@@ -76,6 +80,7 @@ public class DeathScript : MonoBehaviour
     {
         Light = LightObj.GetComponent<Image>();
         aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
+        aBCTP = GetComponent<ActionBasedContinuousTurnProvider>();
        // StartCoroutine(Dying());
         GhostHandLeft.SetActive(false);
         GhostHandRight.SetActive(false);
@@ -89,6 +94,11 @@ public class DeathScript : MonoBehaviour
 
     void Update()
     {
+        if(BoletusInternalMonologue.End)
+        {
+            Darken = true;
+
+        }
         print("darken" + Darken);
         print("lighten" + Lighten);
         print("ResetPExp" + ResetPostExp);
@@ -151,14 +161,23 @@ public class DeathScript : MonoBehaviour
 
             Dead = false;
             yield return new WaitForSeconds(2);
-            LeftHand.SetActive(true);
-            RightHand.SetActive(true);
+           // LeftHand.SetActive(true);
+           // RightHand.SetActive(true);
             GhostHandLeft.SetActive(false);
             GhostHandRight.SetActive(false);
             aBCP.enableFly = false;
             EyeLids.SetActive(true);
             EyeLidAnim.SetTrigger("Blink");
+            BoletusLeftHand.SetActive(true);
+            BoletusRightHand.SetActive(true);
             Possessing = false;
+            transform.position = new Vector3(6.61f, 1.4f, -1.276f);
+            PPScript.ZeroDoF();
+           // transform.eulerAngles = new Vector3()
+            aBCTP.turnSpeed = 0;
+            BoletusVoice.ThatsOddIFeelHer();
+
+
         }
 
 
@@ -214,6 +233,17 @@ public class DeathScript : MonoBehaviour
             MachineAudio.volume = 0f;
             MachineAudio.Stop();
 
+        }
+
+        if(SmokeAlarm.volume>0f)
+        {
+            SmokeAlarm.volume -= Time.deltaTime * 0.05f;
+        }
+
+
+        if(KettleAudio.volume>0f)
+        {
+            KettleAudio.volume -= Time.deltaTime * 0.05f;
         }
 
         // Start the coroutine to fade in the Image over time
@@ -324,10 +354,11 @@ public class DeathScript : MonoBehaviour
     private bool risen;
     private IEnumerator LightFadeOut()
     {
-       
+
         //CameraAnimationScript.DecreaseVignette = true;
-        
-       
+
+        transform.position = new Vector3(7.89f, 1.4f, -1.119f);
+        transform.eulerAngles = new Vector3(0, -90, 0);
         Darken = false;
         
         while (alphaLight > 0)
@@ -340,8 +371,10 @@ public class DeathScript : MonoBehaviour
         Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
         ResetPostExp = true;
       Lighten = false;
+
         yield return new WaitForSeconds(3);
         Corpse.SetActive(true);
+        PPScript.ZeroDoF();
         if (!risen)
         {
             CamAnim.SetBool("pain", false);
@@ -388,6 +421,7 @@ public class DeathScript : MonoBehaviour
         {
            
             CamAnim.SetBool("possess", true);
+
           
             
         }

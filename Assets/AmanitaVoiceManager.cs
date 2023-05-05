@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class AmanitaVoiceManager : MonoBehaviour
 {
@@ -29,10 +30,13 @@ public class AmanitaVoiceManager : MonoBehaviour
     private bool isToastTime;
     public static bool isToasting;
     public CameraAnimationScript camAnim;
+
+    private ActionBasedContinuousMoveProvider aBCP;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(StartSpeakingAmanita());
+        aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
     }
 
     // Update is called once per frame
@@ -106,7 +110,7 @@ public class AmanitaVoiceManager : MonoBehaviour
 
     IEnumerator ToastPromptRepeat()
     {
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(2);
         AudioClip clip = ToastOn[UnityEngine.Random.Range(0, ToastOn.Length)];
         if(!AmanitaVoice.isPlaying && !isToasting)
         AmanitaVoice.PlayOneShot(clip); 
@@ -208,6 +212,8 @@ public class AmanitaVoiceManager : MonoBehaviour
         if(other.CompareTag("zone") && smoking &&!finalAminta)
         {
             StartCoroutine(OhNoSmokePlay());
+            aBCP.moveSpeed = 0;
+
         }
     }
     bool finalAminta = false;
@@ -221,7 +227,7 @@ public class AmanitaVoiceManager : MonoBehaviour
             yield return new WaitForSeconds(5);
             SmokeDetector.PlayAlarm();
             AmanitaVoice.PlayOneShot(AhWhatAboutBoletus);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(9);
             camAnim.DanDanDan();
         }
     }
