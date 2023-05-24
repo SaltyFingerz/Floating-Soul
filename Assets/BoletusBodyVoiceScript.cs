@@ -35,8 +35,7 @@ public class BoletusBodyVoiceScript : MonoBehaviour
         {
             BoletusVoice.PlayOneShot(AmanitaImHome);
             yield return new WaitForSeconds(3);
-            BoletusVoice.PlayOneShot(AmanitaQuestioningly);
-            yield return new WaitForSeconds(2);
+     
             BoletusVoice.PlayOneShot(AmanitaConcerned);
             yield return new WaitForSeconds(1);
             StartCoroutine(ShockedRoutine());
@@ -51,10 +50,6 @@ public class BoletusBodyVoiceScript : MonoBehaviour
 
     IEnumerator ShockedRoutine()
     {
-        BoletusVoice.PlayOneShot(AmanitaShocked1);
-        yield return new WaitForSeconds(2);
-        BoletusVoice.PlayOneShot(AmanitaShocked2);
-        yield return new WaitForSeconds(3);
         BoletusVoice.PlayOneShot(AmanitaShocked3);
         yield return new WaitForSeconds(1);
         AmanitaSadRealising();

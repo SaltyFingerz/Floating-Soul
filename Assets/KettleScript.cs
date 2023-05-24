@@ -98,7 +98,9 @@ public class KettleScript : MonoBehaviour
     IEnumerator FreezeKettle()
     {
         yield return new WaitForSeconds(2);
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        transform.rotation = Quaternion.identity;
+        rb.constraints = RigidbodyConstraints.FreezePosition;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
         yield return new WaitForSeconds(2);
         if (!SteamSFX.isPlaying)
         {

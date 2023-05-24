@@ -7,7 +7,8 @@ public class BoletusInternalMonologue : MonoBehaviour
     public AudioSource BoletusVoice;
     public AudioClip ThatsOdd;
     public AudioClip AAAA;
-    public AudioClip WhywhywhyPunch;
+    public AudioClip WhytoDied;
+    public AudioClip MyNegtoButter;
     public AudioClip CryMedium;
     public AudioClip WhatAmIGoingToDo;
     public AudioClip SheWasAlwaysThere;
@@ -41,7 +42,8 @@ public class BoletusInternalMonologue : MonoBehaviour
         LeftHand.SetActive(false);
         RightHand.SetActive(false);
         yield return new WaitForSeconds(2);
-        BoletusVoice.PlayOneShot(WhywhywhyPunch); yield return new WaitForSeconds(29);
+        BoletusVoice.PlayOneShot(WhytoDied); yield return new WaitForSeconds(14);
+        BoletusVoice.PlayOneShot(MyNegtoButter); yield return new WaitForSeconds(13);
         LeftHand.SetActive(true);
         RightHand.SetActive(true);
         BoletusVoice.PlayOneShot(CryMedium); yield return new WaitForSeconds(8);
