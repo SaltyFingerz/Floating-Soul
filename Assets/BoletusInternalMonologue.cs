@@ -66,9 +66,9 @@ public class BoletusInternalMonologue : MonoBehaviour
    
         BoletusAfterCrying.PlayOneShot(CryMedium); yield return new WaitForSeconds(8);
         BoletusAfterCrying.PlayOneShot(WhatAmIGoingToDo); yield return new WaitForSeconds(14);
-        BoletusAfterCrying.PlayOneShot(SheWasAlwaysThere); yield return new WaitForSeconds(51);
+      //  BoletusAfterCrying.PlayOneShot(SheWasAlwaysThere); yield return new WaitForSeconds(51);
    
-        BoletusAfterCrying.PlayOneShot(WhatsThatInHerPocket); yield return new WaitForSeconds(3);
+        BoletusAfterCrying.PlayOneShot(WhatsThatInHerPocket); yield return new WaitForSeconds(4);
         BoletusAfterCrying.PlayOneShot(ABox); yield return new WaitForSeconds(1);
         RingBox.SetActive(false);
         BoxInHand.SetActive(true);

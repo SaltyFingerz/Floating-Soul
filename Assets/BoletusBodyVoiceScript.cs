@@ -33,6 +33,7 @@ public class BoletusBodyVoiceScript : MonoBehaviour
     {
         if (!BoletusVoice.isPlaying)
         {
+            yield return new WaitForSeconds(1);
             BoletusVoice.PlayOneShot(AmanitaImHome);
             yield return new WaitForSeconds(5);
      

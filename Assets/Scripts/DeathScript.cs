@@ -61,6 +61,7 @@ public class DeathScript : MonoBehaviour
     public static bool Lighten;
     public static bool ResetPostExp;
 
+    private CharacterController CController;
     public void StartFadeOut()
     {
         BirdsAudio.volume = initialVolume;
@@ -78,6 +79,7 @@ public class DeathScript : MonoBehaviour
 
     void Start()
     {
+        CController = GetComponent<CharacterController>();
         Light = LightObj.GetComponent<Image>();
         aBCP = GetComponent<ActionBasedContinuousMoveProvider>();
         aBCTP = GetComponent<ActionBasedContinuousTurnProvider>();
@@ -155,6 +157,7 @@ public class DeathScript : MonoBehaviour
 
         IEnumerator PossessingTime()
         {
+            CController.height = 1;
             ResetPostExp = true;
             Lighten = false;
             increaseSpotLight = false;
@@ -171,7 +174,7 @@ public class DeathScript : MonoBehaviour
             BoletusLeftHand.SetActive(true);
             BoletusRightHand.SetActive(true);
             Possessing = false;
-         //   transform.position = new Vector3(6.61f, 1.4f, -1.276f);
+            transform.position = new Vector3(6.61f, 1.4f, -1.276f);
             PPScript.ZeroDoF();
            // transform.eulerAngles = new Vector3()
             aBCTP.turnSpeed = 0;
