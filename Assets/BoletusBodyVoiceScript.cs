@@ -34,38 +34,38 @@ public class BoletusBodyVoiceScript : MonoBehaviour
         if (!BoletusVoice.isPlaying)
         {
             BoletusVoice.PlayOneShot(AmanitaImHome);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(5);
      
             BoletusVoice.PlayOneShot(AmanitaConcerned);
-            yield return new WaitForSeconds(1);
-            StartCoroutine(ShockedRoutine());
+            yield return new WaitForSeconds(2);
+            AmanitaSadRealising();
         }
 
     }
 
-    public void ShockedCallingRoutine()
-    {
-        StartCoroutine(ShockedRoutine());
-    }
+    //public void ShockedCallingRoutine()
+    //{
+    //    StartCoroutine(ShockedRoutine());
+    //}
 
-    IEnumerator ShockedRoutine()
-    {
-        BoletusVoice.PlayOneShot(AmanitaShocked3);
-        yield return new WaitForSeconds(1);
-        AmanitaSadRealising();
-    }
+    //IEnumerator ShockedRoutine()
+    //{
+    //    BoletusVoice.PlayOneShot(AmanitaShocked3);
+    //    yield return new WaitForSeconds(2);
+    //    AmanitaSadRealising();
+    //}
 
     public void AmanitaSadRealising()
     {
-        BoletusVoice.PlayOneShot(AmanitaRealising);
+   
         StartCoroutine(StartCry());
     }
 
     IEnumerator StartCry()
     {
-        yield return new WaitForSeconds(1);
+       
         BoletusVoice.PlayOneShot(NoAmanitaStartCry);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         CryLong();
     }
  
@@ -88,16 +88,13 @@ public class BoletusBodyVoiceScript : MonoBehaviour
         }
     }
     public void CryLong()
-    {if (!AnimationEventSu.MindOpen)
-        {
+    {
+   
             BoletusVoice.PlayOneShot(CryingLong);
-        }
-
-    else if(AnimationEventSu.MindOpen)
-        {
-            StartCoroutine(IKnowYoureThereRoutine());
-        }
     }
+
+   
+  
 
     IEnumerator IKnowYoureThereRoutine()
     {
@@ -110,7 +107,10 @@ public class BoletusBodyVoiceScript : MonoBehaviour
         BoletusVoice.PlayOneShot(CryingMedium);
     }
 
-   
+   public void StopTalking()
+    {
+        BoletusVoice.Stop();
+    }
 
     public void IKnowYoureListening()
     {
@@ -119,6 +119,7 @@ public class BoletusBodyVoiceScript : MonoBehaviour
 
     public void ThatsOddIFeelHer()
     {
+        if(gameObject.activeSelf)
         BoletusVoice.PlayOneShot(ThatsOdd);
     }
 

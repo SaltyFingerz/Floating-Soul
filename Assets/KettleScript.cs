@@ -34,8 +34,7 @@ public class KettleScript : MonoBehaviour
         SteamSFX.volume = 0.05f;
         var emission = Steam.emission;
         emission.rateOverTime = 2;
-      
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(10);
         emission.rateOverTime = 5;
         yield return new WaitForSeconds(2);
         SteamSFX.volume = 0.1f;
@@ -74,15 +73,11 @@ public class KettleScript : MonoBehaviour
     {
         if(other.CompareTag("hob"))
         {
-          
             Steam.Play();
-           
             _timeElapsed = 0f;
             AmanitaVoiceManager.isOnStove = true;
             AmanitaVoice.PromptToast();
-
             StartCoroutine(FreezeKettle());
-            
         }
     }
 
@@ -97,11 +92,12 @@ public class KettleScript : MonoBehaviour
 
     IEnumerator FreezeKettle()
     {
-        yield return new WaitForSeconds(2);
-        transform.rotation = Quaternion.identity;
+        yield return new WaitForSeconds(4);
+        Quaternion.Euler(Vector3.zero);
+        yield return new WaitForSeconds(1);
         rb.constraints = RigidbodyConstraints.FreezePosition;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(10);
         if (!SteamSFX.isPlaying)
         {
             SteamSFX.Play();

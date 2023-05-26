@@ -8,7 +8,7 @@ public class GhostHandControlsScript : MonoBehaviour
     public InputActionProperty floatAmount;
     public bool LeftHand;
     public GameObject TheBody;
-    public float movementSpeed = 0.5f;
+    public float movementSpeed = 0.1f;
     void Start()
     {
        

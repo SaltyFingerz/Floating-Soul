@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 
 public class CameraAnimationScript : MonoBehaviour
@@ -10,7 +11,7 @@ public class CameraAnimationScript : MonoBehaviour
     public Animator EyeLidAnim;
     public BoletusBodyVoiceScript BoletusVoice;
     public BoletusInternalMonologue BoletusInternal;
- 
+    public ActionBasedContinuousMoveProvider aBCP;
     public static bool Vignetting;
     public static bool Desaturating;
     public static bool DecreaseVignette;
@@ -127,11 +128,11 @@ void Start()
         Screaming.PlayOneShot(Scream1);
         anim.SetBool("pain", false);
         anim.SetBool("dead", true);
-        yield return new WaitForSeconds(1f);
-        Screaming.PlayOneShot(Scream2);
+        //yield return new WaitForSeconds(1f);
+        //Screaming.PlayOneShot(Scream2);
         
-        yield return new WaitForSeconds(1f);
-        Screaming.PlayOneShot(Scream3);
+        //yield return new WaitForSeconds(1f);
+        //Screaming.PlayOneShot(Scream3);
         
       
        
@@ -152,6 +153,8 @@ void Start()
     public void WelcomeBoletusEvent()
     {
         DeathScript.WelcomeBoletus = true;
+        PPScript.RegularVision();
+        aBCP.moveSpeed = 1;
         BoletusVoice.AmanitaCallingByB();
 
     }
@@ -167,7 +170,9 @@ void Start()
       
         if (Boletus.activeSelf && !hidingBoletus)
         {
+            aBCP.moveSpeed = 0;
             StartCoroutine(HideBoletusTime());
+
         }
 
     }

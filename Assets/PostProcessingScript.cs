@@ -19,6 +19,12 @@ public class PostProcessingScript : MonoBehaviour
 
     }
 
+    public void RegularVision()
+    {
+        DeathScript.Lighten = false;
+        DeathScript.Darken = false;
+        m_ColorAd.postExposure.value = 0;
+    }
     public void IncreaseDoF()
     {
         while (M_PPVol.profile.TryGet<DepthOfField>(out m_DoF) && m_DoF.focusDistance.value>0.11f)
@@ -77,10 +83,10 @@ public class PostProcessingScript : MonoBehaviour
 
     public void DecreasePostExp()
     {
-        if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > -10.0)
+        if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > -15.0)
         {
             print("increasing PostExp");
-            m_ColorAd.postExposure.value -= 2f * Time.deltaTime;
+            m_ColorAd.postExposure.value -= 4f * Time.deltaTime;
         }
     }
 

@@ -32,13 +32,13 @@ public class CameraRaycastScript : MonoBehaviour
             if (raycastHit.collider.gameObject.CompareTag("lady"))
             {
                 LookingSu = true;
-                print("looking at Su" + LookingSu);
+         
             }
             else
             {
                 LookingSu = false;
 
-                print("looking at Su" + LookingSu);
+               
             }
 
             if(raycastHit.collider.gameObject.CompareTag("ring"))

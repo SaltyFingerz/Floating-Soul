@@ -8,8 +8,13 @@ public class ToasterScript : MonoBehaviour
     public AudioSource ToasterOnSound;
     public Animator BreadAnim;
     public AmanitaVoiceManager AmanitaVoice;
-    
-public void TurnOnToaster()
+    private SphereCollider ToastTrigger;
+
+    private void Start()
+    {
+        ToastTrigger = GetComponent<SphereCollider>();
+    }
+    public void TurnOnToaster()
     {
         if (AmanitaVoiceManager.toasterWorking)
         {
@@ -17,6 +22,7 @@ public void TurnOnToaster()
             ToasterOnSound.Play();
             StartCoroutine(SmokeProgression());
             BreadAnim.SetTrigger("In");
+            ToastTrigger.enabled = false;
         }
     }
 

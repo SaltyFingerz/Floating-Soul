@@ -17,7 +17,7 @@ public class AnimationEventSu : MonoBehaviour
         yield return new WaitForSeconds(7);
        // PromptEnter.SetActive(true);
         MindOpen = true;
-        print("mind open" + MindOpen);
+      
 
     }
 

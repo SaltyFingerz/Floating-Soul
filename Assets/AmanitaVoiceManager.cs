@@ -30,7 +30,6 @@ public class AmanitaVoiceManager : MonoBehaviour
     private bool isToastTime;
     public static bool isToasting;
     public CameraAnimationScript camAnim;
-
     private ActionBasedContinuousMoveProvider aBCP;
     // Start is called before the first frame update
     void Start()
@@ -96,7 +95,7 @@ public class AmanitaVoiceManager : MonoBehaviour
     public void PromptToast()
     {
         isToastTime = false;
-       
+        toasterWorking = true;
        
       StartCoroutine(ToastPromptRepeat());
     
@@ -110,20 +109,20 @@ public class AmanitaVoiceManager : MonoBehaviour
 
     IEnumerator ToastPromptRepeat()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         AudioClip clip = ToastOn[UnityEngine.Random.Range(0, ToastOn.Length)];
         if(!AmanitaVoice.isPlaying && !isToasting)
         AmanitaVoice.PlayOneShot(clip); 
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(8);
         if (!AmanitaVoice.isPlaying && !isToasting)
             AmanitaVoice.PlayOneShot(clip);
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(8);
         if (!AmanitaVoice.isPlaying && !isToasting)
             AmanitaVoice.PlayOneShot(clip);
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(8);
         if (!AmanitaVoice.isPlaying && !isToasting)
             AmanitaVoice.PlayOneShot(clip);
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(8);
         if (!AmanitaVoice.isPlaying && !isToasting)
             AmanitaVoice.PlayOneShot(clip);
         yield return new WaitForSeconds(15);
@@ -144,7 +143,7 @@ public class AmanitaVoiceManager : MonoBehaviour
 
     IEnumerator StartSpeakingAmanita()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(3);
         AmanitaVoice.PlayOneShot(ILoveMyLife);
         yield return new WaitForSeconds(22);
         EngagementRing.SetActive(true);
@@ -174,7 +173,7 @@ public class AmanitaVoiceManager : MonoBehaviour
         
     }
 
-    public static bool toasterWorking = true;
+    public static bool toasterWorking = false;
     private bool smoking = false;
     IEnumerator WorriedThoughtsOverlay()
     {
@@ -183,17 +182,17 @@ public class AmanitaVoiceManager : MonoBehaviour
 
             AmanitaVoice.PlayOneShot(WhereIsBoletus);
         
-        yield return new WaitForSeconds(16);
+        yield return new WaitForSeconds(10);
 
 
-                AmanitaVoice.PlayOneShot(KettleSounds);
+           //     AmanitaVoice.PlayOneShot(KettleSounds);
   
     
-            yield return new WaitForSeconds(2f);
+            
             AmanitaVoice.PlayOneShot(WhatIfShesNot);
            yield return new WaitForSeconds(3);
-        AmanitaVoice.PlayOneShot(IShouldTakeKettleOff);
-        yield return new WaitForSeconds(2);
+        //AmanitaVoice.PlayOneShot(IShouldTakeKettleOff);
+        //yield return new WaitForSeconds(2);
         AmanitaVoice.PlayOneShot(MarriageCommitment);
         yield return new WaitForSeconds(4);
         AmanitaVoice.PlayOneShot(KettleDefinitelyBoiling);
