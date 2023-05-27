@@ -26,23 +26,17 @@ public class BoletusBodyVoiceScript : MonoBehaviour
 
     public void AmanitaCallingByB()
     {
-       StartCoroutine(CallingRoutine());
+        BoletusVoice.PlayOneShot(AmanitaImHome);
+       
+
     }
 
-    IEnumerator CallingRoutine()
+    public void CallingRoute()
     {
-        if (!BoletusVoice.isPlaying)
-        {
-            yield return new WaitForSeconds(1);
-            BoletusVoice.PlayOneShot(AmanitaImHome);
-            yield return new WaitForSeconds(5);
-     
-            BoletusVoice.PlayOneShot(AmanitaConcerned);
-            yield return new WaitForSeconds(2);
-            AmanitaSadRealising();
-        }
+        BoletusVoice.PlayOneShot(AmanitaConcerned);
 
     }
+  
 
     //public void ShockedCallingRoutine()
     //{

@@ -7,6 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class CameraAnimationScript : MonoBehaviour
 {
+    public DirectorScript Director;
     private Animator anim;
     public Animator EyeLidAnim;
     public BoletusBodyVoiceScript BoletusVoice;
@@ -153,9 +154,11 @@ void Start()
     public void WelcomeBoletusEvent()
     {
         DeathScript.WelcomeBoletus = true;
+        Director.WalkGirl();
         PPScript.RegularVision();
         aBCP.moveSpeed = 1;
-        BoletusVoice.AmanitaCallingByB();
+
+     //   BoletusVoice.AmanitaCallingByB();
 
     }
 

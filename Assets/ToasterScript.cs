@@ -9,6 +9,8 @@ public class ToasterScript : MonoBehaviour
     public Animator BreadAnim;
     public AmanitaVoiceManager AmanitaVoice;
     private SphereCollider ToastTrigger;
+    public GameObject bread;
+    public GameObject toast;
 
     private void Start()
     {
@@ -30,7 +32,9 @@ public class ToasterScript : MonoBehaviour
     {
         yield return new WaitForSeconds(4);
         AmanitaVoice.WhereIsBoletusPlay();
-        yield return new WaitForSeconds(25);
+        yield return new WaitForSeconds(15);
+        bread.SetActive(false);
+        toast.SetActive(true);
         Smoke.Play();
 
 

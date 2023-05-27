@@ -65,8 +65,8 @@ public class BoletusInternalMonologue : MonoBehaviour
         BoletusAfterCrying.PlayOneShot(MyNegtoButter); yield return new WaitForSeconds(13);
    
         BoletusAfterCrying.PlayOneShot(CryMedium); yield return new WaitForSeconds(8);
-        BoletusAfterCrying.PlayOneShot(WhatAmIGoingToDo); yield return new WaitForSeconds(14);
-      //  BoletusAfterCrying.PlayOneShot(SheWasAlwaysThere); yield return new WaitForSeconds(51);
+        //BoletusAfterCrying.PlayOneShot(WhatAmIGoingToDo); yield return new WaitForSeconds(14);
+        BoletusAfterCrying.PlayOneShot(SheWasAlwaysThere); yield return new WaitForSeconds(51);
    
         BoletusAfterCrying.PlayOneShot(WhatsThatInHerPocket); yield return new WaitForSeconds(4);
         BoletusAfterCrying.PlayOneShot(ABox); yield return new WaitForSeconds(1);
@@ -97,7 +97,7 @@ public class BoletusInternalMonologue : MonoBehaviour
 
     public void StartBoletusMonologue()
     {
-        transform.rotation = new Quaternion(0, 180, 0,0);
+        transform.rotation = new Quaternion(0, -90, 0,0);
         BoletusVoicOuter.StopTalking();
         if (!BoletusVoice.isPlaying)
         {

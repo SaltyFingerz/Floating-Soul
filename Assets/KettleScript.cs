@@ -13,7 +13,7 @@ public class KettleScript : MonoBehaviour
     [SerializeField] private float _timeToIncreaseEmissionRate;
     private Rigidbody rb;
     private float _timeElapsed;
-
+    public static bool boiled;
 
     private void Start()
     {
@@ -73,6 +73,7 @@ public class KettleScript : MonoBehaviour
     {
         if(other.CompareTag("hob"))
         {
+            boiled = true;
             Steam.Play();
             _timeElapsed = 0f;
             AmanitaVoiceManager.isOnStove = true;

@@ -51,7 +51,7 @@ public class AmanitaVoiceManager : MonoBehaviour
 
         if (isKettleTime && !isOnStove)
         {
-            if (!AmanitaVoice.isPlaying)
+            if (!AmanitaVoice.isPlaying && !KettleScript.boiled)
             {
                 StartCoroutine(PromptDelay());
             }
@@ -132,7 +132,7 @@ public class AmanitaVoiceManager : MonoBehaviour
     }
     public void PuttingKettleOn()
     {
-        if (!AmanitaVoice.isPlaying && !isOnStove)
+        if (!AmanitaVoice.isPlaying && !isOnStove && !KettleScript.boiled)
         {
             AudioClip clip = WhilePuttingKettle[UnityEngine.Random.Range(0, WhilePuttingKettle.Length)];
             AmanitaVoice.PlayOneShot(clip);

@@ -162,7 +162,7 @@ public class DeathScript : MonoBehaviour
             Lighten = false;
             increaseSpotLight = false;
             LightObj.SetActive(false);
-
+            PPScript.ZeroDoF();
             Dead = false;
             yield return new WaitForSeconds(2);
            // LeftHand.SetActive(true);
@@ -175,7 +175,7 @@ public class DeathScript : MonoBehaviour
             BoletusRightHand.SetActive(true);
             Possessing = false;
             transform.position = new Vector3(6.61f, 1.4f, -1.276f);
-            PPScript.ZeroDoF();
+          
            // transform.eulerAngles = new Vector3()
             aBCTP.turnSpeed = 0;
             BoletusVoice.ThatsOddIFeelHer();
@@ -384,10 +384,10 @@ public class DeathScript : MonoBehaviour
         Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
         ResetPostExp = true;
       Lighten = false;
-
+        PPScript.ZeroDoF();
         yield return new WaitForSeconds(3);
     
-        PPScript.ZeroDoF();
+        
         if (!risen)
         {
             CamAnim.SetBool("pain", false);
