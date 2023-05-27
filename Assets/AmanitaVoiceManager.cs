@@ -185,11 +185,11 @@ public class AmanitaVoiceManager : MonoBehaviour
         yield return new WaitForSeconds(10);
 
 
-           //     AmanitaVoice.PlayOneShot(KettleSounds);
-  
-    
-            
-            AmanitaVoice.PlayOneShot(WhatIfShesNot);
+               AmanitaVoice.PlayOneShot(KettleSounds);
+        yield return new WaitForSeconds(3);
+
+
+        AmanitaVoice.PlayOneShot(WhatIfShesNot);
            yield return new WaitForSeconds(3);
         //AmanitaVoice.PlayOneShot(IShouldTakeKettleOff);
         //yield return new WaitForSeconds(2);
@@ -198,7 +198,7 @@ public class AmanitaVoiceManager : MonoBehaviour
         AmanitaVoice.PlayOneShot(KettleDefinitelyBoiling);
         yield return new WaitForSeconds(3);
         AmanitaVoice.PlayOneShot(WhereIsShe);
-        yield return new WaitForSeconds(2);
+       // yield return new WaitForSeconds(2);
         smoking = true;
 
        

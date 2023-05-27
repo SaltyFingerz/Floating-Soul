@@ -162,6 +162,11 @@ void Start()
 
     }
 
+    public void BoletusHeart()
+    {
+        normalHeartbeat.Play();
+    }
+
     public void CollapsingAudioEvent()
     {
         CollapsingSound.PlayOneShot(Collapsing);

@@ -35,6 +35,6 @@ public class DirectorScript : MonoBehaviour
 
     public void WalkGirl()
     {
-        StartCoroutine (waitToWalk());
+        StartCoroutine(waitToWalk());
     }
 }

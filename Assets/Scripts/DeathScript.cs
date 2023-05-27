@@ -44,7 +44,7 @@ public class DeathScript : MonoBehaviour
     private float alpha;
     private float alphaLight;
     public CameraRaycastScript CamRay;
-
+    public KettleScript Kettle;
     public float fadeDuration = 10f; // duration of the fade in seconds
   
     private float initialVolume;
@@ -96,11 +96,12 @@ public class DeathScript : MonoBehaviour
 
     void Update()
     {
-        if(BoletusInternalMonologue.End)
+        if (BoletusInternalMonologue.End)
         {
             Darken = true;
 
         }
+       
      
 
         if(increaseSpotLight)
@@ -157,7 +158,7 @@ public class DeathScript : MonoBehaviour
 
         IEnumerator PossessingTime()
         {
-            CController.height = 1;
+            CController.height = 0.7f;
             ResetPostExp = true;
             Lighten = false;
             increaseSpotLight = false;
@@ -177,7 +178,7 @@ public class DeathScript : MonoBehaviour
             transform.position = new Vector3(6.61f, 1.4f, -1.276f);
           
            // transform.eulerAngles = new Vector3()
-            aBCTP.turnSpeed = 0;
+           // aBCTP.turnSpeed = 0;
             BoletusVoice.ThatsOddIFeelHer();
 
 
@@ -216,6 +217,7 @@ public class DeathScript : MonoBehaviour
 
  private void LosingHearing()
     {
+        Kettle.stopSteam();
        
         if (BirdsAudio.volume > 0f)
         {

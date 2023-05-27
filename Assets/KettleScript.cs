@@ -7,14 +7,15 @@ using UnityEngine;
 public class KettleScript : MonoBehaviour
 {
     public ParticleSystem Steam;
-    AudioSource SteamSFX;
+    public AudioSource SteamSFX;
+    public AudioSource CollisionSFX;
     public AmanitaVoiceManager AmanitaVoice;
     [SerializeField] private float _emissionRateIncreaseRate;
     [SerializeField] private float _timeToIncreaseEmissionRate;
     private Rigidbody rb;
     private float _timeElapsed;
     public static bool boiled;
-
+ 
     private void Start()
     {
         SteamSFX = GetComponent<AudioSource>();
@@ -74,7 +75,7 @@ public class KettleScript : MonoBehaviour
         if(other.CompareTag("hob"))
         {
             boiled = true;
-            Steam.Play();
+            CollisionSFX.Play();
             _timeElapsed = 0f;
             AmanitaVoiceManager.isOnStove = true;
             AmanitaVoice.PromptToast();
@@ -99,10 +100,16 @@ public class KettleScript : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePosition;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         yield return new WaitForSeconds(10);
+        Steam.Play();
         if (!SteamSFX.isPlaying)
         {
             SteamSFX.Play();
         }
+    }
+
+    public void stopSteam()
+    {
+        SteamSFX.Stop();
     }
 
 }

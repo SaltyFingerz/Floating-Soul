@@ -24,12 +24,12 @@ public class BoletusBodyVoiceScript : MonoBehaviour
        BoletusVoice = GetComponent<AudioSource>(); 
     }
 
-    public void AmanitaCallingByB()
-    {
-        BoletusVoice.PlayOneShot(AmanitaImHome);
-       
+    //public void AmanitaCallingByB()
+    //{
+    //    BoletusVoice.PlayOneShot(AmanitaImHome);
+    //    AmanitaSadRealising();
 
-    }
+    //}
 
     public void CallingRoute()
     {
@@ -58,9 +58,9 @@ public class BoletusBodyVoiceScript : MonoBehaviour
 
     IEnumerator StartCry()
     {
-       
+        yield return new WaitForSeconds(4);
         BoletusVoice.PlayOneShot(NoAmanitaStartCry);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         CryLong();
     }
  

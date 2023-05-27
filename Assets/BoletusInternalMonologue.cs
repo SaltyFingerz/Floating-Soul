@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BoletusInternalMonologue : MonoBehaviour
 {
     public BoletusBodyVoiceScript BoletusVoicOuter;
@@ -27,7 +28,7 @@ public class BoletusInternalMonologue : MonoBehaviour
     public AudioClip MessageBySu;
     public GameObject GhostHandLeft;
     public GameObject GhostHandRight;
-    
+    public GameObject GameOver;
     public GameObject CellPhone;
     public GameObject LeftHand;
     public GameObject RightHand;
@@ -41,6 +42,7 @@ public class BoletusInternalMonologue : MonoBehaviour
     public GameObject BoxInHand;
     public GameObject LeftHandVsibilityBol;
     public GameObject RightHandVsibilityBol;
+    public CameraAnimationScript camAnimSc;
     bool monologuing = false;
     public static bool End;
     bool stopCrying = false;
@@ -60,13 +62,13 @@ public class BoletusInternalMonologue : MonoBehaviour
         LeftHandAlive.SetActive(true);
 
         yield return new WaitForSeconds(2);
-        BoletusAfterCrying.PlayOneShot(WhytoDied); yield return new WaitForSeconds(14);
+        BoletusAfterCrying.PlayOneShot(WhytoDied); yield return new WaitForSeconds(15);
         BoletusAfterCrying.PlayOneShot(CryMedium); yield return new WaitForSeconds(8);
-        BoletusAfterCrying.PlayOneShot(MyNegtoButter); yield return new WaitForSeconds(13);
+        BoletusAfterCrying.PlayOneShot(MyNegtoButter); yield return new WaitForSeconds(14);
    
         BoletusAfterCrying.PlayOneShot(CryMedium); yield return new WaitForSeconds(8);
         //BoletusAfterCrying.PlayOneShot(WhatAmIGoingToDo); yield return new WaitForSeconds(14);
-        BoletusAfterCrying.PlayOneShot(SheWasAlwaysThere); yield return new WaitForSeconds(51);
+        BoletusAfterCrying.PlayOneShot(SheWasAlwaysThere); yield return new WaitForSeconds(52);
    
         BoletusAfterCrying.PlayOneShot(WhatsThatInHerPocket); yield return new WaitForSeconds(4);
         BoletusAfterCrying.PlayOneShot(ABox); yield return new WaitForSeconds(1);
@@ -89,15 +91,21 @@ public class BoletusInternalMonologue : MonoBehaviour
             CellPhone.GetComponent<AudioSource>().PlayOneShot(Greeting); yield return new WaitForSeconds(7);
             CellPhone.GetComponent<AudioSource>().PlayOneShot(MessageBySu);
             CallingScreen.SetActive(false);
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(5);
             End = true;
-        
+        yield return new WaitForSeconds(4);
+        GameOver.SetActive(true);
+        yield return new WaitForSeconds(4);
+        End = false;
+        yield return new WaitForSeconds(5);
+        Application.Quit();
 
     }
 
     public void StartBoletusMonologue()
     {
-        transform.rotation = new Quaternion(0, -90, 0,0);
+        camAnimSc.BoletusHeart();
+        transform.rotation = new Quaternion(0, 90, 0,0);
         BoletusVoicOuter.StopTalking();
         if (!BoletusVoice.isPlaying)
         {

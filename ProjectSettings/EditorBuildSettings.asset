@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/ArchViz.unity
+    guid: 5d9a04077777e2741aa75a554f7ee3fb
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ad151761776121748818f6c777e59bb6,
       type: 2}
