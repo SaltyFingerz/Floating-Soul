@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Video;
+using UnityEngine.UI;
 
 
 public class CameraAnimationScript : MonoBehaviour
@@ -24,6 +26,8 @@ public class CameraAnimationScript : MonoBehaviour
     public AudioClip Scream1;
     public AudioClip Scream2;
     public AudioClip Scream3;
+    public GameObject MainCam;
+    public GameObject VidCam;
     [SerializeField] private AudioSource NormalBreathing;
     [SerializeField] private AudioSource heartAttack;
 
@@ -39,20 +43,42 @@ public class CameraAnimationScript : MonoBehaviour
     public PostProcessingScript PPScript;
 
 
-
- 
-
-
-
+    public RawImage VideoScreen;
+    public VideoPlayer Video;
+   
 
 
-// Start is called before the first frame update
-void Start()
+
+
+
+
+    // Start is called before the first frame update
+    void Start()
     {
 
         anim = GetComponent<Animator>();
+        Video.loopPointReached += OnVideoPlaybackComplete;
+        Cursor.visible = false;
+     
     }
 
+    void OnVideoPlaybackComplete(VideoPlayer vp)
+    {
+        VideoScreen.enabled = false; // Hide the RawImage when video playback completes
+        MainCam.SetActive(true);
+        VidCam.SetActive(false);
+    }
+
+    public void PlayVideo()
+    {
+        if (!Video.isPlaying)
+        {
+           
+            VidCam.SetActive(true);
+            Video.Play(); // Start playing the video
+            MainCam.SetActive(false);
+        }
+    }
 
     public void DanDanDan()
     {
@@ -61,7 +87,10 @@ void Start()
     void Update()
     {
 
-       
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PlayVideo();
+        }
 
         if (Input.GetKeyDown(KeyCode.E))
         {

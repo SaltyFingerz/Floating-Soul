@@ -11,6 +11,7 @@ using Unity.XR.CoreUtils;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
+
 public class DeathScript : MonoBehaviour
 {
     public PostProcessingScript PPScript;
@@ -19,6 +20,7 @@ public class DeathScript : MonoBehaviour
     public GameObject RightHand;
     public AudioClip AmbientAudio;
     public GameObject BoletusRightHand;
+
     public GameObject BoletusLeftHand;
     public GameObject GhostHandLeft;
     public GameObject GhostHandRight;
@@ -90,9 +92,11 @@ public class DeathScript : MonoBehaviour
         Light.color = new Color(Light.color.r, Light.color.g, Light.color.b, 0f);
         initialVolume = BirdsAudio.volume;
         initialVolume2 = MachineAudio.volume;
+            
 
     }
 
+    
 
     void Update()
     {
