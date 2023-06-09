@@ -40,7 +40,7 @@ public class OrbHandIOverlapScript : MonoBehaviour
     {
         if(other.CompareTag("boletus"))
         {
-            print("orb hand overlapped");
+         
             Monologue.AAMonologue();
             SendHapticEvent(1f, 2f);
 

@@ -6,19 +6,11 @@ public class CameraRaycastScript : MonoBehaviour
 {
     public static bool LookingSu;
     public static bool lookingAtRing;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         RaycastSingle();
         
     }
-
     private void RaycastSingle()
     {
         Vector3 origin = transform.position;
@@ -32,13 +24,10 @@ public class CameraRaycastScript : MonoBehaviour
             if (raycastHit.collider.gameObject.CompareTag("lady"))
             {
                 LookingSu = true;
-         
             }
             else
             {
                 LookingSu = false;
-
-               
             }
 
             if(raycastHit.collider.gameObject.CompareTag("ring"))
@@ -50,8 +39,5 @@ public class CameraRaycastScript : MonoBehaviour
                 lookingAtRing= false;
             }
         }
-
     }
-
-
 }

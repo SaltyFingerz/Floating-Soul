@@ -86,21 +86,6 @@ public class CameraAnimationScript : MonoBehaviour
     }
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PlayVideo();
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-
-            DanDanDan();
-           
-        }
-
-       
-
         if(Vignetting) {
             PPScript.IncreaseVignette();
         }
@@ -115,7 +100,7 @@ public class CameraAnimationScript : MonoBehaviour
 
         if(Desaturating)
         {
-            print("desaturating in update");
+       
             PPScript.DecreaseSaturation();  
         }
         else if(!Desaturating)
@@ -146,7 +131,7 @@ public class CameraAnimationScript : MonoBehaviour
         faster3Heartbeat.Play();
         PPScript.IncreaseDoF();
         
-        print("Desaturating" + Desaturating);
+      
         yield return new WaitForSeconds(4f);
         PPScript.DecreaseSaturation();
         faster3Heartbeat.Stop();

@@ -10,15 +10,10 @@ public class PostProcessingScript : MonoBehaviour
     Vignette m_Vignette;
     ColorAdjustments m_ColorAd;
     DepthOfField m_DoF;
-
-
-
     void Start()
     {
         M_PPVol = gameObject.GetComponent<Volume>();
-
     }
-
     public void RegularVision()
     {
         DeathScript.Lighten = false;
@@ -46,7 +41,6 @@ public class PostProcessingScript : MonoBehaviour
             m_Vignette.intensity.value += 0.035f * Time.deltaTime ;
         }
     }
-
     public void ResetVignette()
     {
         if (M_PPVol.profile.TryGet<Vignette>(out m_Vignette))
@@ -54,7 +48,6 @@ public class PostProcessingScript : MonoBehaviour
             m_Vignette.intensity.value = 0.15f;
         }
     }
-
     public void DecreaseVignette()
     {
       
@@ -63,12 +56,11 @@ public class PostProcessingScript : MonoBehaviour
             m_Vignette.intensity.value -= 0.35f * Time.deltaTime;
         }
     }
-
     public void DecreaseSaturation()
     {
         if(M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.saturation.value > -55)
         {
-            print("decrease saturation");
+         
             m_ColorAd.saturation.value -= 5f * Time.deltaTime;
         }
     }
@@ -85,7 +77,7 @@ public class PostProcessingScript : MonoBehaviour
     {
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > -15.0)
         {
-            print("increasing PostExp");
+           
             m_ColorAd.postExposure.value -= 4f * Time.deltaTime;
         }
     }
@@ -95,7 +87,7 @@ public class PostProcessingScript : MonoBehaviour
     {
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value < 15)
         {
-            print("decreasing PostExp");
+           
             m_ColorAd.postExposure.value += 2f * Time.deltaTime;
         }
     }
@@ -108,20 +100,20 @@ public class PostProcessingScript : MonoBehaviour
         if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value > 0)
         {
             m_ColorAd.postExposure.value -= 0.2f * Time.deltaTime *15;
-            print("exposure being decreased");
+       
         }
 
         else if (M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value < 0)
 
         {
             m_ColorAd.postExposure.value += 0.2f * Time.deltaTime *15;
-            print("exposure being increased");
+          
         }
 
          if(M_PPVol.profile.TryGet<ColorAdjustments>(out m_ColorAd) && m_ColorAd.postExposure.value <  0.5f && m_ColorAd.postExposure.value > -0.5f)
         {
             m_ColorAd.postExposure.value = 0;
-            print("exposure zero");
+         
             
                 
                 DeathScript.Lighten = false;
